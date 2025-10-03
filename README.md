@@ -20,6 +20,7 @@ Wątpliwe:
 
 ------------------------------
 System ataku:
+
 Gracz podczas tury ma do wyboru jedną z czterech opcji:
   1. Atak - Gracz atakuje potwora
   2. Obrona - Gracz dostaje mniejsze obrażenia 
