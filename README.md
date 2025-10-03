@@ -17,3 +17,10 @@ Wątpliwe:
 
 - Weapon.java
 - Skill.java
+
+------------------------------
+System ataku:
+  1. Atak
+  2. Obrona
+  3. Oszczędzanie sił
+  4. Specjalna umiejętność
