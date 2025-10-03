@@ -20,7 +20,8 @@ Wątpliwe:
 
 ------------------------------
 System ataku:
-  1. Atak
-  2. Obrona
-  3. Oszczędzanie sił
-  4. Specjalna umiejętność
+Gracz podczas tury ma do wyboru jedną z czterech opcji:
+  1. Atak - Gracz atakuje potwora
+  2. Obrona - Gracz dostaje mniejsze obrażenia 
+  3. Oszczędzanie sił - Gracz oszczędza siły, przez co w następnej turze, jego obrażenia zwiększą się w zakresie od x1.1 do x1.6
+  4. Specjalna umiejętność - Gracz używa swojej specjalnej umiejętności, zależnej od klasy postaci
