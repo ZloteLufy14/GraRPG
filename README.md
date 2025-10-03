@@ -9,7 +9,7 @@
   - potwór 1
   - potwór 2
   - potwór 3
-- Attackable.java
+- Attackable.java (Interfejs)
 
 ------------------------------
 
