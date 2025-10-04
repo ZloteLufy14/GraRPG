@@ -1,4 +1,4 @@
-public class Archer extends Character implements Attackable{
+public class Archer extends Character{
     String weapon;
     String skill;
 
@@ -11,17 +11,5 @@ public class Archer extends Character implements Attackable{
     @Override
     public void characterInfo() {
         System.out.println("Name: " + getName() + "\nLVL: " + getLevel() + "\nStrength: " + getStrength() + "\nHP: " + getHealth() + "\nAgility: " + getAgility() + "\nWeapon: " + this.weapon + "\nSkill: " + this.skill);
-    }
-
-    @Override
-    public void attack() {
-    }
-
-    @Override
-    public void defence() {
-    }
-
-    @Override
-    public void dodge() {
     }
 }
