@@ -1,4 +1,4 @@
-public class Character {
+public class Character implements Attackable {
     private String name;
     private int level;
     private int strength;
@@ -63,5 +63,21 @@ public class Character {
 
     public void characterInfo() {
         System.out.println("\nName: " + this.name + "\nLVL: " + this.level + "\nStrength: " + this.strength + "\nHealth: " + this.health + "\nAgility: " + this.agility);
+    }
+
+    @Override
+    public int attack(int monsterHealth, int characterStrength) {
+        monsterHealth -= characterStrength;
+        return monsterHealth;
+    }
+
+    @Override
+    public void defence() {
+        
+    }
+
+    @Override
+    public void dodge() {
+        
     }
 }
