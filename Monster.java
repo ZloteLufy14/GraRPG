@@ -1,4 +1,4 @@
-public class Monster {
+public class Monster implements Attackable {
     private String name;
     private int strength;
     private int health;
@@ -17,7 +17,7 @@ public class Monster {
         this.name = name; 
     }
 
-        public int getStrength() {
+    public int getStrength() {
         return strength;
     }
 
@@ -37,8 +37,24 @@ public class Monster {
         }
     }
 
-
     public void monsterInfo() {
         System.out.println("\nMonster Name: " + this.name  + "\nStrength: " + this.strength + "\nHP: " + this.health);
     }
+
+    @Override
+    public int attack(int characterHealth, int monsterStrength) {
+        characterHealth -= monsterStrength;
+        return characterHealth;
+    }
+
+    @Override
+    public int defence(int characterHealth, int monsterStrength) {
+        return 0;
+    }
+
+    @Override
+    public int saveStrength() {
+        return 0;
+    }
+
 }
