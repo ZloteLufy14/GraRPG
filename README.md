@@ -6,7 +6,7 @@
   - Mage.java
   - Archer.java
 - Monster.java 
-  - potwór 1
+  - Zombie.java
   - potwór 2
   - potwór 3
 - Attackable.java (Interfejs)
