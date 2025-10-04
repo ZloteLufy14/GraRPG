@@ -1,9 +1,11 @@
 public class Monster {
     private String name;
+    private int strength;
     private int health;
 
-    public Monster(String name, int health) {
+    public Monster(String name, int strength, int health) {
         this.name = name; 
+        this.strength = strength;
         this.health = health;
     }
 
@@ -13,6 +15,16 @@ public class Monster {
 
     public void setName(String name) {
         this.name = name; 
+    }
+
+        public int getStrength() {
+        return strength;
+    }
+
+    public void setStrength(int strength) {
+        if(strength > 0) { 
+            this.strength = strength; 
+        }
     }
 
     public int getHealth() {
@@ -25,7 +37,8 @@ public class Monster {
         }
     }
 
-    public void characterInfo() {
-        System.out.println("\nName: " + this.name + "\nHP: " + this.health);
+
+    public void monsterInfo() {
+        System.out.println("\nMonster Name: " + this.name  + "\nStrength: " + this.strength + "\nHP: " + this.health);
     }
 }
