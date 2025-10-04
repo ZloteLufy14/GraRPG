@@ -3,7 +3,8 @@ public class Character implements Attackable {
     private int level;
     private int strength;
     private int health;
-    private int agility ;
+    private int agility;
+    private boolean savedStrength = false;
 
     public Character(String name, int level, int strength, int health, int agility) {
         this.name = name; 
@@ -67,17 +68,26 @@ public class Character implements Attackable {
 
     @Override
     public int attack(int monsterHealth, int characterStrength) {
-        monsterHealth -= characterStrength;
+        int damage = characterStrength;
+
+        if (savedStrength) {
+            damage *= 2;
+            savedStrength = false;
+        }
+
+        monsterHealth -= damage;
         return monsterHealth;
     }
 
     @Override
-    public void defence() {
-        
+    public int defence(int characterHealth, int monsterStrength) {
+        characterHealth -= (monsterStrength * 0.5);
+        return characterHealth;
     }
 
     @Override
-    public void dodge() {
-        
+    public int saveStrength() {
+        savedStrength = true;
+        return getStrength();
     }
 }
