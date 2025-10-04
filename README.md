@@ -26,3 +26,5 @@ Gracz podczas tury ma do wyboru jedną z czterech opcji:
   2. Obrona - Gracz dostaje mniejsze obrażenia 
   3. Oszczędzanie sił - Gracz oszczędza siły, przez co w następnej turze, jego obrażenia zwiększą się w zakresie od x1.1 do x1.6
   4. Specjalna umiejętność - Gracz używa swojej specjalnej umiejętności, zależnej od klasy postaci
+------------------------------
+Trudno powiedzieć kto będzie robił konkretny plik, ponieważ każdy robi i modyfikuje kod
