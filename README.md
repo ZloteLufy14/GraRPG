@@ -15,8 +15,8 @@
 
 Wątpliwe:
 
-- Weapon.java
-- Skill.java
+- Weapon.java (Interfejs)
+- Skill.java (Interfejs)
 
 ------------------------------
 System ataku
