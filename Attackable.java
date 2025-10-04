@@ -1,6 +1,6 @@
 public interface Attackable {
     
-    void attack();
+    int attack(int monsterHealth, int characterStrength);
     void defence();
     void dodge();
 
