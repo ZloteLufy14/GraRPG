@@ -9,28 +9,34 @@ public class Main {
         // List<Character> characters = new ArrayList<>();
         // boolean running = true;
 
-            Monster testMonster = null;
-            testMonster = new Zombie("Bartek", 10, 100);
+        Monster testMonster;
+        testMonster = new Zombie("Bartek", 5, 70);
 
-            Character testCharacter = null;
-            testCharacter = new Warrior("Jeremi", 0, 10, 150, 20, "Sword", "Super Attack");
+        Character testCharacter;
+        // testCharacter = new Warrior("Jeremi", 0, 10, 150, 20, "Sword", "Super Attack");
+        testCharacter = new Mage("Jeremi", 0, 20, 70, 30, "Magic Wand", "Heal");
+        // testCharacter = new Archer("Jeremi", 0, 15, 100, 50, "Sword", "Dodge"); 
 
-            int monsterHealth = testMonster.getHealth();
-            int characterHealth = testCharacter.getHealth();
+        System.out.println("-----------------------------");
+        testCharacter.characterInfo();
+        System.out.println("-----------------------------");
+
+        int monsterHealth = testMonster.getHealth();
+        int characterHealth = testCharacter.getHealth();
 
         while (characterHealth > 0 && monsterHealth > 0) {
             System.out.println("Your turn: ");
             System.out.println("1 - Attack");
             System.out.println("2 - Defend yourself");
             System.out.println("3 - Save strength for next attack");
-            System.out.println("4 - Use special abillity");
+            System.out.println("4 - Use special abillity - " + testCharacter.getSkill());
 
             System.out.print("Select option: ");
             int selectOption = scan.nextInt();
 
             System.out.println("-----------------------------");
 
-            if (!(selectOption > 0 && selectOption < 5)) {
+            if ((selectOption > 0 && selectOption < 5)) {
                 switch (selectOption) {
                     case 1:  
                         monsterHealth = testCharacter.attack(testMonster.getHealth(), testCharacter.getStrength());
@@ -41,6 +47,7 @@ public class Main {
 
                         System.out.println("Your HP: " + testCharacter.getHealth());
                         System.out.println("Monster HP: " + testMonster.getHealth());
+                        System.out.println("-----------------------------");
 
                         break;
                     case 2:
@@ -49,6 +56,7 @@ public class Main {
 
                         System.out.println("Your HP: " + testCharacter.getHealth());
                         System.out.println("Monster HP: " + testMonster.getHealth());
+                        System.out.println("-----------------------------");
                         break;
                     case 3:
                         testCharacter.saveStrength(); 
@@ -58,9 +66,31 @@ public class Main {
 
                         System.out.println("Your HP: " + testCharacter.getHealth());
                         System.out.println("Monster HP: " + testMonster.getHealth());
+                        System.out.println("-----------------------------");
                         break;
                     case 4:
+                        if(!testCharacter.isSkillCooldown()) {
+                            if (testCharacter instanceof Warrior){
+                                monsterHealth = testCharacter.skill(testMonster.getHealth(), testCharacter.getStrength());
+                                testMonster.setHealth(monsterHealth);
+
+                                characterHealth = testMonster.attack(testCharacter.getHealth(), testMonster.getStrength());
+                                testCharacter.setHealth(characterHealth);
+                            } else if (testCharacter instanceof Mage) {
+                                characterHealth = testCharacter.skill(testCharacter.getHealth(), testCharacter.getStrength()); 
+                                testCharacter.setHealth(characterHealth); 
+
+                                characterHealth = testMonster.attack(testCharacter.getHealth(), testMonster.getStrength());
+                                testCharacter.setHealth(characterHealth);
+                            } // trzeba zrobić archera i dodge()
+                        } else {
+                            System.out.println("You are to weak, to use your special abillity second time in a row.");
+                            System.out.println("-----------------------------");
+                        }
                     
+                        System.out.println("Your HP: " + testCharacter.getHealth());
+                        System.out.println("Monster HP: " + testMonster.getHealth());
+                        System.out.println("-----------------------------");
                         break;
                     default:
                         throw new IllegalArgumentException("Error");
