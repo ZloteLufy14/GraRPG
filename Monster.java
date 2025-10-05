@@ -57,4 +57,9 @@ public class Monster implements Attackable {
         return 0;
     }
 
+        @Override
+    public boolean dodge(int agility) {
+        return false;
+    }
+
 }
