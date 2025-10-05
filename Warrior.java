@@ -1,4 +1,8 @@
-public class Warrior extends Character implements Weapon {
+import java.util.Random;
+
+public class Warrior extends Character implements Skill{
+    Random rand = new Random();
+
     String weapon;
     String skill;
 
@@ -7,9 +11,41 @@ public class Warrior extends Character implements Weapon {
         this.weapon = weapon;
         this.skill = skill;
     }
+    
+    @Override
+    public String getWeapon() {
+        return weapon;
+    }
+
+    @Override
+    public void setWeapon(String weapon) {
+        this.weapon = weapon; 
+    }
+
+    @Override
+    public String getSkill() {
+        return skill;
+    }
+
+    @Override
+    public void setSkill(String skill) {
+        this.skill = skill; 
+    }
 
     @Override
     public void characterInfo() {
-        System.out.println("Name: " + getName() + "\nLVL: " + getLevel() + "\nStrength: " + getStrength() + "\nHP: " + getHealth() + "\nAgility: " + getAgility() + "\nWeapon: " + this.weapon + "\nSkill: " + this.skill);
+        System.out.println("Character type: Warrior" + "\nName: " + getName() + "\nLVL: " + getLevel() + "\nStrength: " + getStrength() + "\nHP: " + getHealth() + "\nAgility: " + getAgility() + "\nWeapon: " + this.weapon + "\nSkill: " + this.skill);
+    }
+
+    @Override
+    public int skill(int monsterHealth, int characterStrength) {
+        int damage = characterStrength;
+        double damageMultiplier = rand.nextDouble(1) + 1;
+
+        damage *= damageMultiplier;
+
+        monsterHealth -= damage;
+        setSkillCooldown(true);
+        return monsterHealth;
     }
 }
