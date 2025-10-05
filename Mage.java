@@ -1,4 +1,8 @@
-public class Mage extends Character{
+import java.util.Random;
+
+public class Mage extends Character implements Skill{
+    Random rand = new Random();
+
     String weapon;
     String skill;
 
@@ -9,7 +13,39 @@ public class Mage extends Character{
     }
 
     @Override
+    public String getWeapon() {
+        return weapon;
+    }
+
+    @Override
+    public void setWeapon(String weapon) {
+        this.weapon = weapon; 
+    }
+
+    @Override
+    public String getSkill() {
+        return skill;
+    }
+
+    @Override
+    public void setSkill(String skill) {
+        this.skill = skill; 
+    }
+
+    @Override
     public void characterInfo() {
-        System.out.println("Name: " + getName() + "\nLVL: " + getLevel() + "\nStrength: " + getStrength() + "\nHP: " + getHealth() + "\nAgility: " + getAgility() + "\nWeapon: " + this.weapon + "\nSkill: " + this.skill);
+        System.out.println("Character type: Mage" + "\nName: " + getName() + "\nLVL: " + getLevel() + "\nStrength: " + getStrength() + "\nHP: " + getHealth() + "\nAgility: " + getAgility() + "\nWeapon: " + this.weapon + "\nSkill: " + this.skill);
+    }
+
+    @Override
+    public int skill(int characterHealth, int characterStrength) {
+        int hp = 5;
+        double hpMultiplier = rand.nextDouble(1) + 1;
+
+        hp *= hpMultiplier;
+
+        characterHealth += hp;
+        setSkillCooldown(true);
+        return characterHealth;
     }
 }
