@@ -9,7 +9,27 @@ public class Archer extends Character{
     }
 
     @Override
+    public String getWeapon() {
+        return weapon;
+    }
+
+    @Override
+    public void setWeapon(String weapon) {
+        this.weapon = weapon; 
+    }
+
+    @Override
+    public String getSkill() {
+        return skill;
+    }
+
+    @Override
+    public void setSkill(String skill) {
+        this.skill = skill; 
+    }
+
+    @Override
     public void characterInfo() {
-        System.out.println("Name: " + getName() + "\nLVL: " + getLevel() + "\nStrength: " + getStrength() + "\nHP: " + getHealth() + "\nAgility: " + getAgility() + "\nWeapon: " + this.weapon + "\nSkill: " + this.skill);
+        System.out.println("Character type: Archer" + "\nName: " + getName() + "\nLVL: " + getLevel() + "\nStrength: " + getStrength() + "\nHP: " + getHealth() + "\nAgility: " + getAgility() + "\nWeapon: " + this.weapon + "\nSkill: " + this.skill);
     }
 }
