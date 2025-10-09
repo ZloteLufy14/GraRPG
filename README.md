@@ -10,11 +10,6 @@
   - potwór 2
   - potwór 3
 - Attackable.java (Interfejs)
-
-------------------------------
-
-Wątpliwe:
-
 - Weapon.java (Interfejs)
 - Skill.java (Interfejs)
 
