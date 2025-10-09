@@ -32,4 +32,11 @@ public class Archer extends Character{
     public void characterInfo() {
         System.out.println("Character type: Archer" + "\nName: " + getName() + "\nLVL: " + getLevel() + "\nStrength: " + getStrength() + "\nHP: " + getHealth() + "\nAgility: " + getAgility() + "\nWeapon: " + this.weapon + "\nSkill: " + this.skill);
     }
+
+    @Override
+    public int skill(int monsterStrength, int characterHealth) {
+        characterHealth += monsterStrength;
+        setSkillCooldown(true);
+        return characterHealth;
+    }
 }

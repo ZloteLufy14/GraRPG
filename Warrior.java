@@ -1,6 +1,6 @@
 import java.util.Random;
 
-public class Warrior extends Character implements Skill{
+public class Warrior extends Character{
     Random rand = new Random();
 
     String weapon;

@@ -1,7 +1,7 @@
 public class Zombie extends Monster {
 
-    public Zombie(String name, int strength, int health) {
-        super(name, strength, health); 
+    public Zombie() {
+        super("Zombie", 5, 70);
     }
 
     @Override
