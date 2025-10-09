@@ -14,6 +14,12 @@ public class Main {
         testMonster = new BoguJerma();
         boolean rogueDodge = false;
 
+
+        for (int i = 0; i < Waves.wave1.length; i++) {
+            System.out.println(i+1 + " - " + Waves.wave1[i].getName());
+        }
+
+
         Character testCharacter;
         // testCharacter = new Warrior("Jeremi", 0, 10, 150, 20, "Sword", "Super Attack");
         testCharacter = new Mage("Jeremi", 0, 20, 70, 30, "Magic Wand", "Heal");
