@@ -2,11 +2,13 @@ public class Monster implements Attackable {
     private String name;
     private int strength;
     private int health;
+    private boolean rogueDodge;
 
     public Monster(String name, int strength, int health) {
         this.name = name; 
         this.strength = strength;
         this.health = health;
+        this.rogueDodge = false;
     }
 
     public String getName() {
@@ -30,11 +32,20 @@ public class Monster implements Attackable {
     public int getHealth() {
         return health;
     }
-
     public void setHealth(int health) {
-        if(health > 0) { 
-            this.health = health; 
+        if(health > 0) {
+            this.health = health;
+        }else if(health <= 0){
+            this.health = 0;
         }
+    }
+
+    public boolean getRogueDodge() {
+        return rogueDodge;
+    }
+
+    public void setRogueDodge(boolean rogueDodge) {
+        this.rogueDodge = rogueDodge;
     }
 
     public void monsterInfo() {

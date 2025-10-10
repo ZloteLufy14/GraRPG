@@ -1,9 +1,22 @@
 import java.util.*;
 
 public class Main {
-    public void battle(){
 
+    public static void monsterAttack(Monster monster, Character character){
+        int characterHealth = monster.attack(character.getHealth(), monster.getStrength());
+        character.setHealth(characterHealth);
     }
+
+    public static void playerAttack(Monster monster, Character character){
+        int monsterHealth = character.attack(monster.getHealth(), character.getStrength());
+        monster.setHealth(monsterHealth);
+    }
+
+    public static void playerDefence(Monster monster, Character character){
+        int characterHealth = character.defence(character.getHealth(), monster.getStrength());
+        character.setHealth(characterHealth);
+    }
+
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
 
@@ -11,8 +24,7 @@ public class Main {
 //         boolean running = true;
 
         Monster testMonster;
-        testMonster = new BoguJerma();
-        boolean rogueDodge = false;
+        testMonster = new Zombie();
 
 
         for (int i = 0; i < Waves.wave1.length; i++) {
@@ -32,8 +44,7 @@ public class Main {
         int monsterHealth = testMonster.getHealth();
         int characterHealth = testCharacter.getHealth();
 
-
-        while (characterHealth > 0 && monsterHealth > 0) {
+        while (testCharacter.getHealth() > 0 && testMonster.getHealth() > 0) {
             System.out.println("Your turn: ");
             System.out.println("1 - Attack");
             System.out.println("2 - Defend yourself");
@@ -45,31 +56,45 @@ public class Main {
 
             System.out.println("-----------------------------");
 
+            if(selectOption == 4 && testCharacter.isSkillCooldown()){
+                do{
+                    System.out.println("You are too weak, to use your special abillity second time in a row.");
+                    System.out.println("-----------------------------");
+
+                    System.out.println("Your turn: ");
+                    System.out.println("1 - Attack");
+                    System.out.println("2 - Defend yourself");
+                    System.out.println("3 - Save strength for next attack");
+                    System.out.println("4 - Use special abillity - " + testCharacter.getSkill());
+
+                    System.out.print("Select option: ");
+                    selectOption = scan.nextInt();
+
+                    System.out.println("-----------------------------");
+                }while(selectOption == 4);
+            }
+
             if ((selectOption > 0 && selectOption < 5)) {
                 switch (selectOption) {
                     case 1:
-
                         if(testCharacter.dodge(testCharacter.getAgility())){
                             System.out.println("dodge");
                             if(testMonster instanceof Rogue) {
-                                rogueDodge = true;
+                                testMonster.setRogueDodge(true);
                             }
                         }else{
-                            characterHealth = testMonster.attack(testCharacter.getHealth(), testMonster.getStrength());
-                            testCharacter.setHealth(characterHealth);
+                            monsterAttack(testMonster, testCharacter);
                         }
 
-                        if(rogueDodge){
-                            rogueDodge = false;
+                        if(testMonster.getRogueDodge()){
+                            testMonster.setRogueDodge(false);
                         }else{
-                            monsterHealth = testCharacter.attack(testMonster.getHealth(), testCharacter.getStrength());
-                            testMonster.setHealth(monsterHealth);
+                            playerAttack(testMonster, testCharacter);
                         }
 
                         break;
                     case 2:
-                        characterHealth = testCharacter.defence(testCharacter.getHealth(), testMonster.getStrength());
-                        testCharacter.setHealth(characterHealth);
+                        playerDefence(testMonster, testCharacter);
 
                         break;
                     case 3:
@@ -78,8 +103,7 @@ public class Main {
                         if(testCharacter.dodge(testCharacter.getAgility())){
                             System.out.println("dodge");
                         }else{
-                            characterHealth = testMonster.attack(testCharacter.getHealth(), testMonster.getStrength());
-                            testCharacter.setHealth(characterHealth);
+                            monsterAttack(testMonster, testCharacter);
                         }
 
                         break;
@@ -88,35 +112,28 @@ public class Main {
                             if (testCharacter instanceof Warrior) {
                                 monsterHealth = testCharacter.skill(testMonster.getHealth(), testCharacter.getStrength());
                                 testMonster.setHealth(monsterHealth);
-
                             } else if (testCharacter instanceof Mage) {
                                 characterHealth = testCharacter.skill(testCharacter.getHealth(), testCharacter.getStrength());
                                 testCharacter.setHealth(characterHealth);
-
                             } else if (testCharacter instanceof Archer) {
                                 characterHealth = testCharacter.skill(testMonster.getStrength(), testCharacter.getHealth());
                                 testCharacter.setHealth(characterHealth);
                             }
-                        } else {
-                            System.out.println("You are too weak, to use your special abillity second time in a row.");
-                            System.out.println("-----------------------------");
                         }
 
                         if(testCharacter.dodge(testCharacter.getAgility())){
                             System.out.println("dodge");
                             if(testMonster instanceof Rogue) {
-                                rogueDodge = true;
+                                testMonster.setRogueDodge(true);
                             }
                         }else if(testCharacter instanceof Archer && selectOption == 4){
-                            characterHealth = testMonster.attack(testCharacter.getHealth(), testMonster.getStrength());
-                            testCharacter.setHealth(characterHealth);
+                            monsterAttack(testMonster, testCharacter);
 
                             if(testMonster instanceof Rogue) {
-                                rogueDodge = true;
+                                testMonster.setRogueDodge(true);
                             }
                         }else{
-                            characterHealth = testMonster.attack(testCharacter.getHealth(), testMonster.getStrength());
-                            testCharacter.setHealth(characterHealth);
+                            monsterAttack(testMonster, testCharacter);
                         }
 
                         break;
@@ -127,9 +144,9 @@ public class Main {
                 System.out.println("Pick correct option.");
                 System.out.println("-----------------------------");
             }
-            if(monsterHealth <= 0){
+            if(testMonster.getHealth() <= 0){
                 System.out.println("Victory");
-            } else if (characterHealth <= 0) {
+            } else if (testCharacter.getHealth() <= 0) {
                 System.out.println("Defeat");
             } else {
                 System.out.println("Your HP: " + testCharacter.getHealth());
