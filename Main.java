@@ -27,8 +27,8 @@ public class Main {
         testMonster = new Zombie();
 
 
-        for (int i = 0; i < Waves.wave1.length; i++) {
-            System.out.println(i+1 + " - " + Waves.wave1[i].getName());
+        for (int i = 0; i < Waves.waves.length; i++) {
+            System.out.println(i+1 + " - " + Waves.waves[i][0].getName());
         }
 
 
@@ -276,4 +276,5 @@ public class Main {
 //             }
 //         }
     }
+
 }
