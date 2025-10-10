@@ -1,10 +1,7 @@
 public class Waves {
 
-    static Monster[] wave1 = {
-        new Zombie(),
-        new Rogue(),
-        new Ork()
+    static Monster[][] waves = {
+        {new Zombie(), new Rogue(), new Ork()} //wave1
     };
 
 }
-
