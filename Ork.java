@@ -27,4 +27,9 @@ public class Ork extends Monster{
         characterHealth -= monsterStrength;
         return characterHealth;
     }
+
+    @Override
+    public String getMonsterClass() {
+        return "Ork";
+    } 
 }

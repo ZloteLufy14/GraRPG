@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
 
@@ -17,46 +18,27 @@ public class Main {
         character.setHealth(characterHealth);
     }
 
-    public static void main(String[] args) {
-        Scanner scan = new Scanner(System.in);
-
-//         List<Character> characters = new ArrayList<>();
-//         boolean running = true;
-
-        Monster testMonster;
-        testMonster = new Zombie();
-
-
-        for (int i = 0; i < Waves.waves.length; i++) {
-            System.out.println(i+1 + " - " + Waves.waves[i][0].getName());
-        }
-
-
-        Character testCharacter;
-        // testCharacter = new Warrior("Jeremi", 0, 10, 150, 20, "Sword", "Super Attack");
-        testCharacter = new Mage("Jeremi", 0, 20, 70, 30, "Magic Wand", "Heal");
-        //testCharacter = new Archer("Jeremi", 0, 15, 100, 70, "Sword", "Dodge");
-
-        System.out.println("-----------------------------");
-        testCharacter.characterInfo();
-        System.out.println("-----------------------------");
-
-        int monsterHealth = testMonster.getHealth();
-        int characterHealth = testCharacter.getHealth();
-
-        while (testCharacter.getHealth() > 0 && testMonster.getHealth() > 0) {
+    public static void battle(Character character) throws InterruptedException {
+        int currentWave = 1;    
+        int whichMonster = 0;
+        int monsterDead = 0;
+        while (character.getHealth() > 0 && Waves.waves[19][0].getHealth() > 0) {
+            Scanner scan = new Scanner(System.in);
+            int monsterHealth;
+            int characterHealth;
+    
             System.out.println("Your turn: ");
             System.out.println("1 - Attack");
             System.out.println("2 - Defend yourself");
             System.out.println("3 - Save strength for next attack");
-            System.out.println("4 - Use special abillity - " + testCharacter.getSkill());
+            System.out.println("4 - Use special abillity - " + character.getSkill());
 
             System.out.print("Select option: ");
             int selectOption = scan.nextInt();
 
             System.out.println("-----------------------------");
 
-            if(selectOption == 4 && testCharacter.isSkillCooldown()){
+            if(selectOption == 4 && character.isSkillCooldown()){
                 do{
                     System.out.println("You are too weak, to use your special abillity second time in a row.");
                     System.out.println("-----------------------------");
@@ -65,7 +47,7 @@ public class Main {
                     System.out.println("1 - Attack");
                     System.out.println("2 - Defend yourself");
                     System.out.println("3 - Save strength for next attack");
-                    System.out.println("4 - Use special abillity - " + testCharacter.getSkill());
+                    System.out.println("4 - Use special abillity - " + character.getSkill());
 
                     System.out.print("Select option: ");
                     selectOption = scan.nextInt();
@@ -73,87 +55,158 @@ public class Main {
                     System.out.println("-----------------------------");
                 }while(selectOption == 4);
             }
+            
+            Monster[] currentWaveArray = Waves.waves[currentWave - 1];
+
+            System.out.println("Your HP: " + character.getHealth());
+            System.out.println("-----------------------------");
+            for(int i=0;i<currentWaveArray.length;i++){
+                System.out.println(i+1 + " - " + currentWaveArray[i].getName() + " [" + currentWaveArray[i].getHealth() + "]");
+            }
+            System.out.println("-----------------------------");
 
             if ((selectOption > 0 && selectOption < 5)) {
+                
                 switch (selectOption) {
                     case 1:
-                        if(testCharacter.dodge(testCharacter.getAgility())){
-                            System.out.println("dodge");
-                            if(testMonster instanceof Rogue) {
-                                testMonster.setRogueDodge(true);
-                            }
-                        }else{
-                            monsterAttack(testMonster, testCharacter);
-                        }
+                    
+                        System.out.print("Choose monster to attack: ");
+                        selectOption = scan.nextInt();
+                        System.out.println("-----------------------------");
 
-                        if(testMonster.getRogueDodge()){
-                            testMonster.setRogueDodge(false);
-                        }else{
-                            playerAttack(testMonster, testCharacter);
+                        if(selectOption > 0 && selectOption <= currentWaveArray.length){
+                            if(character.dodge(character.getAgility())){
+                                System.out.println("dodge");
+                                if(currentWaveArray[whichMonster] instanceof Rogue) {
+                                    currentWaveArray[whichMonster].setRogueDodge(true);
+                                }
+                            }else{
+                                monsterAttack(currentWaveArray[whichMonster], character);
+                            }
+
+                            if(currentWaveArray[selectOption - 1].getRogueDodge()){
+                                System.out.println("Drapichrust dodged");
+                                currentWaveArray[selectOption - 1].setRogueDodge(false);
+                            }else{
+                                playerAttack(currentWaveArray[selectOption - 1], character);
+                            }
                         }
 
                         break;
                     case 2:
-                        playerDefence(testMonster, testCharacter);
+                        playerDefence(currentWaveArray[whichMonster], character);
 
                         break;
                     case 3:
-                        testCharacter.saveStrength();
+                        character.saveStrength();
 
-                        if(testCharacter.dodge(testCharacter.getAgility())){
+                        if(character.dodge(character.getAgility())){
                             System.out.println("dodge");
                         }else{
-                            monsterAttack(testMonster, testCharacter);
+                            monsterAttack(currentWaveArray[whichMonster], character);
                         }
 
                         break;
                     case 4:
-                        if (!testCharacter.isSkillCooldown()) {
-                            if (testCharacter instanceof Warrior) {
-                                monsterHealth = testCharacter.skill(testMonster.getHealth(), testCharacter.getStrength());
-                                testMonster.setHealth(monsterHealth);
-                            } else if (testCharacter instanceof Mage) {
-                                characterHealth = testCharacter.skill(testCharacter.getHealth(), testCharacter.getStrength());
-                                testCharacter.setHealth(characterHealth);
-                            } else if (testCharacter instanceof Archer) {
-                                characterHealth = testCharacter.skill(testMonster.getStrength(), testCharacter.getHealth());
-                                testCharacter.setHealth(characterHealth);
+                        if (!character.isSkillCooldown()) {
+                            if (character instanceof Warrior) {
+                                System.out.print("Choose monster to attack: ");
+                                selectOption = scan.nextInt();
+                                System.out.println("-----------------------------");
+
+                                if(selectOption > 0 && selectOption <= currentWaveArray.length){
+                                    monsterHealth = character.skill(currentWaveArray[selectOption-1].getHealth(), character.getStrength());
+                                    currentWaveArray[selectOption-1].setHealth(monsterHealth);
+                                }
+                            } else if (character instanceof Mage) {
+                                characterHealth = character.skill(character.getHealth(), character.getStrength());
+                                character.setHealth(characterHealth);
+                            } else if (character instanceof Archer) {
+                                characterHealth = character.skill(currentWaveArray[whichMonster].getStrength(), character.getHealth());
+                                character.setHealth(characterHealth);
                             }
                         }
 
-                        if(testCharacter.dodge(testCharacter.getAgility())){
+                        if(character.dodge(character.getAgility())){
                             System.out.println("dodge");
-                            if(testMonster instanceof Rogue) {
-                                testMonster.setRogueDodge(true);
+                            if(currentWaveArray[whichMonster] instanceof Rogue) {
+                                currentWaveArray[whichMonster].setRogueDodge(true);
                             }
-                        }else if(testCharacter instanceof Archer && selectOption == 4){
-                            monsterAttack(testMonster, testCharacter);
+                        }else if(character instanceof Archer && selectOption == 4){
+                            monsterAttack(currentWaveArray[whichMonster], character);
 
-                            if(testMonster instanceof Rogue) {
-                                testMonster.setRogueDodge(true);
+                            if(currentWaveArray[whichMonster] instanceof Rogue) {
+                                currentWaveArray[whichMonster].setRogueDodge(true);
                             }
                         }else{
-                            monsterAttack(testMonster, testCharacter);
+                            monsterAttack(currentWaveArray[whichMonster], character);
                         }
 
                         break;
                     default:
                         throw new IllegalArgumentException("Error");
                 }
+                if(whichMonster >= currentWaveArray.length-1){
+                    whichMonster = 0;
+                }else{
+                    whichMonster++;
+                    while(currentWaveArray[whichMonster].getHealth() <= 0 && whichMonster < currentWaveArray.length){
+                        whichMonster++;
+                    }
+                }
             } else {
                 System.out.println("Pick correct option.");
                 System.out.println("-----------------------------");
             }
-            if(testMonster.getHealth() <= 0){
+            if(Waves.waves[19][0].getHealth() <= 0){
                 System.out.println("Victory");
-            } else if (testCharacter.getHealth() <= 0) {
+            } else if (character.getHealth() <= 0) {
                 System.out.println("Defeat");
             } else {
-                System.out.println("Your HP: " + testCharacter.getHealth());
-                System.out.println("Monster HP: " + testMonster.getHealth());
+                TimeUnit.SECONDS.sleep(1);
+
+                System.out.println("Your HP: " + character.getHealth());
+                for(int i=0;i<currentWaveArray.length;i++){
+                    System.out.println(i+1 + " - " + currentWaveArray[i].getName() + " [" + currentWaveArray[i].getHealth() + "]");
+                }
                 System.out.println("-----------------------------");
+ 
+
+                for(int i=0;i<currentWaveArray.length;i++){
+                    if(currentWaveArray[i].getHealth() <= 0){
+                        monsterDead++;
+                    }
+                }
+
+                if(monsterDead == currentWaveArray.length){
+                    System.out.println("Wave " + currentWave + " Ends ");
+                    currentWave++;
+                    monsterDead = 0;
+                    System.out.println("Next wave " + currentWave);
+                    character.setHealth(character.getHealth() + 35);
+                }else{
+                    monsterDead = 0;
+                }
             }
         }
+    }
+
+    public static void main(String[] args)  throws InterruptedException {
+        Scanner scan = new Scanner(System.in);
+
+//         List<Character> characters = new ArrayList<>();
+//         boolean running = true;
+
+        Character testCharacter;
+        //testCharacter = new Warrior("Jeremi", 0, 10, 150, 20, "Sword", "Super Attack");
+        testCharacter = new Mage("Jeremi", 0, 20, 70, 30, "Magic Wand", "Heal");
+        //testCharacter = new Archer("Jeremi", 0, 15, 100, 70, "Sword", "Dodge");
+
+        System.out.println("-----------------------------");
+        testCharacter.characterInfo();
+        System.out.println("-----------------------------");
+
+        battle(testCharacter);
     
 //         while (running) {
 //              System.out.println("Select option: ");
@@ -276,5 +329,4 @@ public class Main {
 //             }
 //         }
     }
-
 }

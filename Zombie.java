@@ -8,4 +8,9 @@ public class Zombie extends Monster {
     public void monsterInfo() {
         System.out.println("Name: " + getName() + "\nStrength: " + getStrength() + "\nHP: " + getHealth());
     }
+
+    @Override
+    public String getMonsterClass() {
+        return "Zombie";
+    } 
 }

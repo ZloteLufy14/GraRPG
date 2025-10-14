@@ -12,4 +12,9 @@ public class Rogue extends Monster{
         System.out.println("Name: " + getName() + "\nStrength: " + getStrength() + "\nHP: " + getHealth());
     }
 
+    @Override
+    public String getMonsterClass() {
+        return "Rogue";
+    } 
+
 }

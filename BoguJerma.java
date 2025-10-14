@@ -48,6 +48,11 @@ public class BoguJerma extends Monster{
         return characterHealth;
     }
 
+    @Override
+    public String getMonsterClass() {
+        return "BoguJerma";
+    } 
+
 //    public int healthDebuff(int characterHealth) {
 //        characterHealth -= (characterHealth*0.15);
 //

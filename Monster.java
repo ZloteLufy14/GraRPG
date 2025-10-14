@@ -60,17 +60,20 @@ public class Monster implements Attackable {
 
     @Override
     public int defence(int characterHealth, int monsterStrength) {
-        return 0;
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public int saveStrength() {
-        return 0;
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public boolean dodge(int agility) {
-        return false;
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    public String getMonsterClass() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }
