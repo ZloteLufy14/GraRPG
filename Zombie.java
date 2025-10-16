@@ -1,7 +1,7 @@
 public class Zombie extends Monster {
 
     public Zombie() {
-        super("Zombie", 5, 70);
+        super("Zombie", 5, 10);
     }
 
     @Override

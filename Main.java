@@ -3,6 +3,12 @@ import java.util.concurrent.TimeUnit;
 
 public class Main {
 
+    public static final String RESET = "\u001B[0m";
+    public static final String RED = "\u001B[31m";
+    public static final String GREEN = "\u001B[32m";
+    public static final String YELLOW = "\u001B[33m";
+    public static final String BLUE = "\u001B[34m";
+
     public static void monsterAttack(Monster monster, Character character){
         int characterHealth = monster.attack(character.getHealth(), monster.getStrength());
         character.setHealth(characterHealth);
@@ -18,10 +24,19 @@ public class Main {
         character.setHealth(characterHealth);
     }
 
+    public static void clearConsole() {
+        for (int i = 0; i < 50; i++) {
+            System.out.println();
+        }
+    }
+
     public static void battle(Character character) throws InterruptedException {
-        int currentWave = 1;    
+
+
+        int currentWave = 19;
         int whichMonster = 0;
         int monsterDead = 0;
+        boolean jermaLine = false;
         while (character.getHealth() > 0 && Waves.waves[19][0].getHealth() > 0) {
             Scanner scan = new Scanner(System.in);
             int monsterHealth;
@@ -40,7 +55,7 @@ public class Main {
 
             if(selectOption == 4 && character.isSkillCooldown()){
                 do{
-                    System.out.println("You are too weak, to use your special abillity second time in a row.");
+                    System.out.println(RED + "You are too weak, to use your special abillity second time in a row." + RESET);
                     System.out.println("-----------------------------");
 
                     System.out.println("Your turn: ");
@@ -76,7 +91,7 @@ public class Main {
 
                         if(selectOption > 0 && selectOption <= currentWaveArray.length){
                             if(character.dodge(character.getAgility())){
-                                System.out.println("dodge");
+                                System.out.println(BLUE + "dodge" + RESET);
                                 if(currentWaveArray[whichMonster] instanceof Rogue) {
                                     currentWaveArray[whichMonster].setRogueDodge(true);
                                 }
@@ -85,11 +100,14 @@ public class Main {
                             }
 
                             if(currentWaveArray[selectOption - 1].getRogueDodge()){
-                                System.out.println("Drapichrust dodged");
+                                System.out.println(YELLOW + "Drapichrust dodged" + RESET);
                                 currentWaveArray[selectOption - 1].setRogueDodge(false);
                             }else{
                                 playerAttack(currentWaveArray[selectOption - 1], character);
                             }
+                        }else{
+                            System.out.println(RED + "Pick correct option." + RESET);
+                            System.out.println("-----------------------------");
                         }
 
                         break;
@@ -101,7 +119,7 @@ public class Main {
                         character.saveStrength();
 
                         if(character.dodge(character.getAgility())){
-                            System.out.println("dodge");
+                            System.out.println(BLUE + "dodge" + RESET);
                         }else{
                             monsterAttack(currentWaveArray[whichMonster], character);
                         }
@@ -128,7 +146,7 @@ public class Main {
                         }
 
                         if(character.dodge(character.getAgility())){
-                            System.out.println("dodge");
+                            System.out.println(BLUE + "dodge" + RESET);
                             if(currentWaveArray[whichMonster] instanceof Rogue) {
                                 currentWaveArray[whichMonster].setRogueDodge(true);
                             }
@@ -155,13 +173,28 @@ public class Main {
                     }
                 }
             } else {
-                System.out.println("Pick correct option.");
+                System.out.println(RED + "Pick correct option." + RESET);
                 System.out.println("-----------------------------");
             }
-            if(Waves.waves[19][0].getHealth() <= 0){
-                System.out.println("Victory");
+            if(Waves.waves[18][0].getHealth() <= 0){
+                System.out.println(GREEN + "Victory" + RESET);
+                TimeUnit.SECONDS.sleep(3);
+                System.out.println("You really thought you won...");
+                TimeUnit.SECONDS.sleep(3);
+                System.out.println("Time for the real challenge...");
+                TimeUnit.SECONDS.sleep(3);
+                System.out.println("Get ready for...");
+                TimeUnit.SECONDS.sleep(3);
+                clearConsole();
+                TimeUnit.SECONDS.sleep(3);
+                System.out.println(RED + "██████   ██████   ██████  ██    ██      ██ ███████ ██████  ███    ███  █████   " + RESET);
+                System.out.println(RED + "██   ██ ██    ██ ██       ██    ██      ██ ██      ██   ██ ████  ████ ██   ██  " + RESET);
+                System.out.println(RED + "██████  ██    ██ ██   ███ ██    ██      ██ █████   ██████  ██ ████ ██ ███████  " + RESET);
+                System.out.println(RED + "██   ██ ██    ██ ██    ██ ██    ██ ██   ██ ██      ██   ██ ██  ██  ██ ██   ██  " + RESET);
+                System.out.println(RED + "██████   ██████   ██████   ██████   █████  ███████ ██   ██ ██      ██ ██   ██  " + RESET);
+                break;
             } else if (character.getHealth() <= 0) {
-                System.out.println("Defeat");
+                System.out.println(RED + "Defeat" + RESET);
             } else {
                 TimeUnit.SECONDS.sleep(1);
 
@@ -179,16 +212,22 @@ public class Main {
                 }
 
                 if(monsterDead == currentWaveArray.length){
-                    System.out.println("Wave " + currentWave + " Ends ");
+                    System.out.println(GREEN + "Wave " + currentWave + " Ends " + RESET);
                     currentWave++;
                     monsterDead = 0;
-                    System.out.println("Next wave " + currentWave);
+                    System.out.println(GREEN + "Next wave " + currentWave + RESET);
                     character.setHealth(character.getHealth() + 35);
                 }else{
                     monsterDead = 0;
                 }
             }
         }
+    }
+
+    public static void bossBattle(Character character){
+        System.out.println("Dzisiaj napiszemy sobie metodę...");
+
+
     }
 
     public static void main(String[] args)  throws InterruptedException {
@@ -207,6 +246,7 @@ public class Main {
         System.out.println("-----------------------------");
 
         battle(testCharacter);
+//        bossBattle(testCharacter);
     
 //         while (running) {
 //              System.out.println("Select option: ");
