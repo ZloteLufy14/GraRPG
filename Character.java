@@ -52,8 +52,10 @@ public class Character implements Attackable, Skill {
     }
 
     public void setHealth(int health) {
-        if(health > 0) { 
-            this.health = health; 
+         if(health > 0) {
+            this.health = health;
+        }else if(health <= 0){
+            this.health = 0;
         }
     }
 
@@ -129,14 +131,12 @@ public class Character implements Attackable, Skill {
         int chanceOfDodge = rand.nextInt(20) + 1;
 
         if (characterAgility > 0 && characterAgility <= 50) {
-            return chanceOfDodge % 5 == 0; // 20%
+            return chanceOfDodge % 10 == 0; // 10%
         } else if (characterAgility > 51 && characterAgility <= 100) {
-            return chanceOfDodge % 4 == 0; // 25%
+            return chanceOfDodge % 5 == 0; // 20%
         } else if (characterAgility > 101 && characterAgility <= 150) {
-            return chanceOfDodge % 3 == 0; // 33%
-        } else if (characterAgility > 151) {
-            return chanceOfDodge % 2 == 0; // 50%
-        } else  {
+            return chanceOfDodge % 4 == 0; // 25%
+        }else  {
             throw new UnsupportedOperationException("Not supported yet.");
         }
     }

@@ -35,7 +35,6 @@ public class Archer extends Character{
 
     @Override
     public int skill(int monsterStrength, int characterHealth) {
-        characterHealth += monsterStrength;
         setSkillCooldown(true);
         return characterHealth;
     }

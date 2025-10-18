@@ -73,6 +73,28 @@ public class Monster implements Attackable {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    //Metody bossssssa
+        public int passiveHealing(int monsterHealth){
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        public int strengthDebuff(int characterStrength) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        public int healthDebuff(int characterHealth) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+            
+        public int healthBoost(int characterHealth) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        public int strengthBoost(int characterHealth) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+    //koniec metod bossssssa
+
     public String getMonsterClass() {
         throw new UnsupportedOperationException("Not supported yet.");
     }

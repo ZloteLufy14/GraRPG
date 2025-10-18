@@ -98,4 +98,19 @@ public class Display {
         System.out.println("%%%%%%%%%%%###%%%##*+++++#@@@@@@@@@@@%#########%%%##**##@%#***#@%*-=----=*##%*+=-----=+*%%%%%%%%####");
         System.out.println("%%%@@%%%%%%%%@@@@@@@@@@@@@%##%%%%#***#############****#%%***#@=::#@@@@==%##*####%%%%@%%%%%%%########");
     }
+
+    public static void LKSDisplay(){
+        System.out.println("   ###        ##   ###    :####:  ");
+        System.out.println("   ###        ##   ##    :######  ");
+        System.out.println("   ###        ## :##:    ##:   :# ");
+        System.out.println("   ###        ##.##:     ##       ");
+        System.out.println("   ###        #####      ###:     ");
+        System.out.println(" #######      #####      :#####:  ");
+        System.out.println(" #######      #####:      .#####: ");
+        System.out.println("   ###        ##::##         :### ");
+        System.out.println("   ###        ##  ##           ## ");
+        System.out.println("   ###        ##  :##    #:.  :## ");
+        System.out.println("   ########   ##   ##    #######: ");
+        System.out.println("   ########   ##   :##   .#####:  ");
+    }
 }
