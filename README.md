@@ -7,8 +7,8 @@
   - Archer.java
 - Monster.java 
   - Zombie.java
-  - potwór 2
-  - potwór 3
+  - Rogue.java
+  - Ork.java
 - Attackable.java (Interfejs)
 - Weapon.java (Interfejs)
 - Skill.java (Interfejs)
