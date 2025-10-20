@@ -34,14 +34,32 @@ public class Main {
     }
 
     public static void battle(Character character) throws InterruptedException {
-
-        int currentWave = 19;
+        
+        int currentWave = 1;
         int whichMonster = 0;
         int monsterDead = 0;
+        boolean bossStart = true;
+        for(int i=0;i<Waves.waves.length;i++){
+            for(int j=0;j<Waves.waves[i].length;j++){
+                if(Waves.waves[i][j] instanceof Zombie){
+                  Waves.waves[i][j].setHealth(70);
+                }
+                if(Waves.waves[i][j] instanceof Rogue){
+                  Waves.waves[i][j].setHealth(60);
+                }
+                if(Waves.waves[i][j] instanceof Ork){
+                  Waves.waves[i][j].setHealth(100);
+                }
+                if(Waves.waves[i][j] instanceof BoguJerma){
+                  Waves.waves[i][j].setHealth(1000);
+                }
+            }
+        }
         while (character.getHealth() > 0 && Waves.waves[18][0].getHealth() > 0) {
             Scanner scan = new Scanner(System.in);
             int monsterHealth;
             int characterHealth;
+            int characterDefaultHealth = character.getHealth();
     
             System.out.println("Your turn: ");
             System.out.println("1 - Attack");
@@ -196,10 +214,12 @@ public class Main {
                 // System.out.println(RED + "██████  ██    ██ ██   ███ ██    ██      ██ █████   ██████  ██ ████ ██ ███████  " + RESET);
                 // System.out.println(RED + "██   ██ ██    ██ ██    ██ ██    ██ ██   ██ ██      ██   ██ ██  ██  ██ ██   ██  " + RESET);
                 // System.out.println(RED + "██████   ██████   ██████   ██████   █████  ███████ ██   ██ ██      ██ ██   ██  " + RESET);
+                bossStart = true;
                 break;
             } else if (character.getHealth() <= 0) {
                 System.out.println(RED + "Defeat" + RESET);
-                //WYWALANIE DO MENU
+                bossStart = false;
+                break;
             } else {
                 TimeUnit.SECONDS.sleep(1);
 
@@ -217,17 +237,22 @@ public class Main {
                 }
 
                 if(monsterDead == currentWaveArray.length){
+                    character.setHealth(characterDefaultHealth);
+                    character.addLevel();
+                    character.characterInfo();
                     System.out.println(GREEN + "Wave " + currentWave + " Ends " + RESET);
                     currentWave++;
                     monsterDead = 0;
                     System.out.println(GREEN + "Next wave " + currentWave + RESET);
-                    character.setHealth(character.getHealth() + 35);
+    
                 }else{
                     monsterDead = 0;
                 }
             }
         }
-        bossBattle(character, Waves.waves[19][0]);
+        if(bossStart){
+            bossBattle(character, Waves.waves[19][0]);
+        }
     }
 
     public static void bossBattle(Character character, Monster boguJerma) throws InterruptedException {
@@ -355,6 +380,7 @@ public class Main {
                 System.out.println(RED + "Defeat" + RESET);
                 System.out.println();
                 System.out.println(TLO_CZERWONE + CZARNY + "Kto nie ma brzucha, ten kiepsko r... pisze w C++" + RESET);
+                break;
             } else {
                 TimeUnit.SECONDS.sleep(1);
 
@@ -387,18 +413,22 @@ public class Main {
         Scanner scan = new Scanner(System.in);
 
 //         List<Character> characters = new ArrayList<>();
-//         boolean running = true;
+         boolean running = true;
 
         Character testCharacter;
         //testCharacter = new Warrior("Jeremi", 0, 10, 150, 20, "Sword", "Super Attack");
         //testCharacter = new Mage("Jeremi", 0, 20, 70, 30, "Magic Wand", "Heal");
-        testCharacter = new Archer("Jeremi", 0, 0, 10, 70, "Sword", "Dodge");
+        testCharacter = new Archer("Jeremi", 0, 150, 100, 70, "bow", "Dodge");
 
         System.out.println("-----------------------------");
         testCharacter.characterInfo();
         System.out.println("-----------------------------");
 
-        battle(testCharacter);
+        while(running){
+            System.out.println("nigeggwfafs");
+            testCharacter.setHealth(100);
+            battle(testCharacter);
+        }
         
     
 //         while (running) {

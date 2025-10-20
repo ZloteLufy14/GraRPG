@@ -37,8 +37,7 @@ public class Waves {
 
         {new Zombie(), new Zombie(), new Zombie(), new Zombie()}, //wave18
 
-        //{new Rogue(), new Ork(), new Ork()}, //wave19
-        {new Zombie()},
+        {new Rogue(), new Ork(), new Ork()}, //wave19
 
         {new BoguJerma()} //wave20
     };

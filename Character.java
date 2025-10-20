@@ -37,6 +37,12 @@ public class Character implements Attackable, Skill {
         }
     }
 
+    public void addLevel() {
+        this.level += 1; 
+        this.health *= 1.1;
+        this.strength *= 1.1;
+    }
+
     public int getStrength() {
         return strength;
     }
