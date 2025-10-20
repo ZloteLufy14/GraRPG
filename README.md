@@ -9,9 +9,12 @@
   - Zombie.java
   - Rogue.java
   - Ork.java
+  - BoguJerma.java (Boss)
 - Attackable.java (Interfejs)
 - Weapon.java (Interfejs)
 - Skill.java (Interfejs)
+- Display.java
+- Waves.java
 
 ------------------------------
 System ataku
