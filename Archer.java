@@ -48,4 +48,17 @@ public class Archer extends Character{
 
         return health;
     }
+ @Override
+    public void firstWeapon() {
+        setStrength(getStrength()+30);
+        setAgility(getAgility()+5);
+        setWeapon("Maczeta");
+    }
+
+    @Override
+    public void secondWeapon() {
+        setStrength(getStrength()+60);
+        setAgility(getAgility()+10);
+        setWeapon("Dzida");
+    }
 }

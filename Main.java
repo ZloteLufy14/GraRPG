@@ -511,7 +511,7 @@ public class Main {
         //     battle(testCharacter);
         // }
 
-        
+            
         
     
         while (running) {
@@ -554,11 +554,58 @@ public class Main {
                         System.out.println("");
                         System.out.println("/////////////////////////////");
                         System.out.println("");
+
+
+                        System.out.println("Select ur weapon: ");
+                        System.out.println("-----------------------------");
+                    
+                        if(selected instanceof Warrior){
+                            System.out.println("1 Sword");
+                            System.out.println("2 Axe");
+                        }else if(selected instanceof Mage){
+                            System.out.println("1 Wand");
+                            System.out.println("2 Staff");
+                        }else if(selected instanceof Archer){
+                            System.out.println("1 Bow");
+                            System.out.println("2 Better bow, lmao");
+                        }
+
+                        System.out.println("-----------------------------");
+                        int chooseWeapon = scan.nextInt();
+                        System.out.println("");
+                        System.out.println("/////////////////////////////");
+                        System.out.println("");
+                        
+
+
+                        while(!(chooseWeapon > 0 && chooseWeapon <= 2)){
+                            System.out.println("Wrong option!");
+                            chooseWeapon = scan.nextInt();
+                        }
+                         switch (chooseWeapon) {
+                            case 1:
+                                selected.firstWeapon();
+                                break;
+                            case 2:
+                                if (selected.getLevel() >= 10) {
+                                    selected.secondWeapon();
+                                } else {
+                                    System.out.println("Not enough level!");
+                                }
+                                break;
+                            default:
+                                selected.firstWeapon();
+                        }
+
+                        selected.characterInfo();
+                        
+
                         battle(selected);
 
                         characters.set(pick-1, selected);
                         
                         saveCharacters(characters);
+                        
                     }
                     break;
                 case 2:
@@ -624,7 +671,7 @@ public class Main {
                     break;
                 case 4:
                     running = false;
-                    System.out.println("Bye, Bye!");
+                    System.out.println("Ahja");
                     System.exit(0);
                     break;
                 case 22:

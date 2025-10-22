@@ -1,6 +1,6 @@
 import java.util.Random;
 
-public class Character implements Attackable, Skill {
+public class Character implements Attackable, Skill, Weapon {
     Random rand = new Random();
 
     private String name;
@@ -153,6 +153,16 @@ public class Character implements Attackable, Skill {
 
     @Override
     public int skill(int Health, int Strength) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void firstWeapon() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void secondWeapon() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }

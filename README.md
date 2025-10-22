@@ -26,3 +26,4 @@ Gracz podczas tury ma do wyboru jedną z czterech opcji:
   4. Specjalna umiejętność - Gracz używa swojej specjalnej umiejętności, zależnej od klasy postaci
 ------------------------------
 Trudno powiedzieć kto będzie robił konkretny plik, ponieważ każdy robi i modyfikuje kod
+
