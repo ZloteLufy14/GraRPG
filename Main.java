@@ -268,8 +268,12 @@ public class Main {
                     whichMonster = 0;
                 }else{
                     whichMonster++;
-                    while(currentWaveArray[whichMonster].getHealth() <= 0 && whichMonster < currentWaveArray.length){
-                        whichMonster++;
+                    while(currentWaveArray[whichMonster].getHealth() <= 0 && whichMonster < currentWaveArray.length-1){
+                        if(whichMonster >= currentWaveArray.length-1){
+                            whichMonster = 0;
+                        }else{
+                            whichMonster++;
+                        }
                     }
                 }
             } else {
@@ -560,14 +564,20 @@ public class Main {
                         System.out.println("-----------------------------");
                     
                         if(selected instanceof Warrior){
-                            System.out.println("1 Sword");
-                            System.out.println("2 Axe");
+                            System.out.println("1 - Sword (default)");
+                            System.out.println("2 - Axe");
+                            System.out.println("3 - Lance");
+                            System.out.println("4 - Pan");
                         }else if(selected instanceof Mage){
-                            System.out.println("1 Wand");
-                            System.out.println("2 Staff");
+                            System.out.println("1 - Wand (default)");
+                            System.out.println("2 - Staff");
+                            System.out.println("3 - Spell book");
+                            System.out.println("4 - Super duper spell book");
                         }else if(selected instanceof Archer){
-                            System.out.println("1 Bow");
-                            System.out.println("2 Better bow, lmao");
+                            System.out.println("1 - Bow (default)");
+                            System.out.println("2 - Better bow, lmao");
+                            System.out.println("3 - Rock (throwable btw)");
+                            System.out.println("4 - Unusual looking stick (kinda sexy)");
                         }
 
                         System.out.println("-----------------------------");
@@ -577,25 +587,51 @@ public class Main {
                         System.out.println("");
                         
 
+                        boolean isWeaponSelected = false;
 
-                        while(!(chooseWeapon > 0 && chooseWeapon <= 2)){
+                        
+                        while(!isWeaponSelected){
+                            while(!(chooseWeapon > 0 && chooseWeapon <= 4)){
                             System.out.println("Wrong option!");
                             chooseWeapon = scan.nextInt();
                         }
+
                          switch (chooseWeapon) {
                             case 1:
                                 selected.firstWeapon();
+                                isWeaponSelected = true;
                                 break;
                             case 2:
                                 if (selected.getLevel() >= 10) {
                                     selected.secondWeapon();
+                                    isWeaponSelected = true;
                                 } else {
-                                    System.out.println("Not enough level!");
+                                    System.out.println(RED + "Not enough level!" + RESET);
+                                    chooseWeapon = scan.nextInt();
+                                }
+                                break;
+                            case 3:
+                                if (selected.getLevel() >= 20) {
+                                    selected.thirdWeapon();
+                                    isWeaponSelected = true;
+                                } else {
+                                    System.out.println(RED + "Not enough level!" + RESET);
+                                    chooseWeapon = scan.nextInt();
+                                }
+                                break;
+                            case 4:
+                                if (selected.getLevel() >= 30) {
+                                    selected.fourthWeapon();
+                                    isWeaponSelected = true;
+                                } else {
+                                    System.out.println(RED + "Not enough level!" + RESET);
+                                    chooseWeapon = scan.nextInt();
                                 }
                                 break;
                             default:
                                 selected.firstWeapon();
                         }
+                    }
 
                         selected.characterInfo();
                         

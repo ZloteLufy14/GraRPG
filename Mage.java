@@ -57,17 +57,31 @@ public class Mage extends Character{
         }
         return health;
     }
- @Override
+  @Override
     public void firstWeapon() {
-        setStrength(getStrength()+30);
+        setStrength(getStrength()+10);
         setAgility(getAgility()+5);
-        setWeapon("Maczeta");
+        setWeapon("Wand");
     }
 
     @Override
     public void secondWeapon() {
-        setStrength(getStrength()+60);
+        setStrength(getStrength()+30);
         setAgility(getAgility()+10);
-        setWeapon("Dzida");
+        setWeapon("Staff");
+    }
+
+    @Override
+    public void thirdWeapon() {
+        setStrength(getStrength()+45);
+        setAgility(getAgility()+20);
+        setWeapon("Spell book");
+    }
+
+    @Override
+    public void fourthWeapon() {
+        setStrength(getStrength()+60);
+        setAgility(getAgility()+25);
+        setWeapon("Super duper spell book");
     }
 }

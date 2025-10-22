@@ -165,4 +165,12 @@ public class Character implements Attackable, Skill, Weapon {
     public void secondWeapon() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+    @Override
+    public void thirdWeapon() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+    @Override
+    public void fourthWeapon() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

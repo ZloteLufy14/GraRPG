@@ -5,4 +5,9 @@ public interface Weapon {
     
     void secondWeapon();
 
+    void thirdWeapon();
+
+    
+    void fourthWeapon();
+
 } 
