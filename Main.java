@@ -547,15 +547,18 @@ public class Main {
                             System.out.println("Wrong option!");
                             pick = scan.nextInt();
                         }
-                            Character selected = characters.get(pick - 1);
-                            System.out.println("-----------------------------");
-                            System.out.println("You chosen: " + selected.getName());
-                            selected.characterInfo();
-                            System.out.println("");
-                            System.out.println("/////////////////////////////");
-                            System.out.println("");
-                            battle(selected);
-                            saveCharacters(characters);
+                        Character selected = characters.get(pick - 1);
+                        System.out.println("-----------------------------");
+                        System.out.println("You chosen: " + selected.getName());
+                        selected.characterInfo();
+                        System.out.println("");
+                        System.out.println("/////////////////////////////");
+                        System.out.println("");
+                        battle(selected);
+
+                        characters.set(pick-1, selected);
+                        
+                        saveCharacters(characters);
                     }
                     break;
                 case 2:
