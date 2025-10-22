@@ -1,4 +1,3 @@
-Mage;test1;1;20;70;30;Magic Wand;Heal
-Archer;test2;0;15;100;50;Bow;Dodge
-Warrior;test3;1;110;150;20;Sword;Super Attack
-
+Warrior;test1;5;10;150;20;Sword;Super Attack
+Mage;test2;20;20;70;30;Magic Wand;Heal
+Archer;test3;10;15;100;50;Bow;Dodge
