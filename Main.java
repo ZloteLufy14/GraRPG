@@ -282,21 +282,21 @@ public class Main {
             }
             if(Waves.waves[18][0].getHealth() <= 0){
                 System.out.println(GREEN + "Victory" + RESET);
-                // TimeUnit.SECONDS.sleep(3);
-                // System.out.println("You really thought you won...");
-                // TimeUnit.SECONDS.sleep(3);
-                // System.out.println("Time for the real challenge...");
-                // TimeUnit.SECONDS.sleep(3);
-                // System.out.println("Get ready for...");
-                // TimeUnit.SECONDS.sleep(3);
-                // clearConsole();
-                // TimeUnit.SECONDS.sleep(3);
-                // Display.bogujermaDisplay();
-                // System.out.println(RED + "██████   ██████   ██████  ██    ██      ██ ███████ ██████  ███    ███  █████   " + RESET);
-                // System.out.println(RED + "██   ██ ██    ██ ██       ██    ██      ██ ██      ██   ██ ████  ████ ██   ██  " + RESET);
-                // System.out.println(RED + "██████  ██    ██ ██   ███ ██    ██      ██ █████   ██████  ██ ████ ██ ███████  " + RESET);
-                // System.out.println(RED + "██   ██ ██    ██ ██    ██ ██    ██ ██   ██ ██      ██   ██ ██  ██  ██ ██   ██  " + RESET);
-                // System.out.println(RED + "██████   ██████   ██████   ██████   █████  ███████ ██   ██ ██      ██ ██   ██  " + RESET);
+                TimeUnit.SECONDS.sleep(3);
+                System.out.println("You really thought you won...");
+                TimeUnit.SECONDS.sleep(3);
+                System.out.println("Time for the real challenge...");
+                TimeUnit.SECONDS.sleep(3);
+                System.out.println("Get ready for...");
+                TimeUnit.SECONDS.sleep(3);
+                clearConsole();
+                TimeUnit.SECONDS.sleep(3);
+                Display.bogujermaDisplay();
+                System.out.println(RED + "██████   ██████   ██████  ██    ██      ██ ███████ ██████  ███    ███  █████   " + RESET);
+                System.out.println(RED + "██   ██ ██    ██ ██       ██    ██      ██ ██      ██   ██ ████  ████ ██   ██  " + RESET);
+                System.out.println(RED + "██████  ██    ██ ██   ███ ██    ██      ██ █████   ██████  ██ ████ ██ ███████  " + RESET);
+                System.out.println(RED + "██   ██ ██    ██ ██    ██ ██    ██ ██   ██ ██      ██   ██ ██  ██  ██ ██   ██  " + RESET);
+                System.out.println(RED + "██████   ██████   ██████   ██████   █████  ███████ ██   ██ ██      ██ ██   ██  " + RESET);
                 bossStart = true;
                 break;
             } else if (character.getHealth() <= 0) {
@@ -731,6 +731,7 @@ public class Main {
     }
 
 }
+
 
 
 
