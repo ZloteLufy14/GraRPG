@@ -1,3 +1,0 @@
-Warrior;cwel;1;110;0;20;Sword;Super Attack
-Mage;ignacefsds;0;20;70;30;Magic Wand;Heal
-Archer;adasfdsf;0;15;100;50;Sword;Dodge
