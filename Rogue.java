@@ -4,7 +4,7 @@ public class Rogue extends Monster{
     Random rand = new Random();
 
     public Rogue(){
-        super("Drapichrust",2,60);
+        super("Drapichrust",4,60);
     }
 
     @Override

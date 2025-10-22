@@ -48,4 +48,14 @@ public class Warrior extends Character{
         setSkillCooldown(true);
         return monsterHealth;
     }
+
+    @Override
+    public int getDefaultHealth(){
+        int health = 150;
+        for(int i=0;i<getLevel();i++){
+            health *= 1.1;
+        }
+
+        return health;
+    }
 }

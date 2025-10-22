@@ -43,6 +43,10 @@ public class Character implements Attackable, Skill {
         this.strength *= 1.1;
     }
 
+    public int getDefaultHealth(){
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
     public int getStrength() {
         return strength;
     }

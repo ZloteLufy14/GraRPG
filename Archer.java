@@ -38,4 +38,14 @@ public class Archer extends Character{
         setSkillCooldown(true);
         return characterHealth;
     }
+
+    @Override
+    public int getDefaultHealth(){
+        int health = 100;
+        for(int i=0;i<getLevel();i++){
+            health *= 1.1;
+        }
+
+        return health;
+    }
 }

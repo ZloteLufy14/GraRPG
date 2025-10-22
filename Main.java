@@ -1,3 +1,11 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -11,6 +19,77 @@ public class Main {
     public static final String PURPLE = "\u001B[35m";
     public static final String TLO_CZERWONE = "\u001B[41m";
     public static final String CZARNY = "\u001B[90m";
+
+    public static void saveCharacters(List<Character> characters) {
+        Path path = Paths.get("saves.txt");
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(path.toFile()))) {
+            for (int i = 0; i < characters.size(); i++) {
+                Character character = characters.get(i);
+                writer.write(character.getClass().getSimpleName() + ";" +
+                        character.getName() + ";" +
+                        character.getLevel() + ";" +
+                        character.getStrength() + ";" +
+                        character.getHealth() + ";" +
+                        character.getAgility() + ";" +
+                        character.getWeapon() + ";" +
+                        character.getSkill());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static List<Character> loadCharacters() {
+        List<Character> characters = new ArrayList<>();
+        Path path = Paths.get("saves.txt");
+
+        if (!Files.exists(path)) {
+            return characters;
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(path.toFile()))) {
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(";");
+                if (parts.length < 8) continue;
+
+                String type = parts[0];
+                String name = parts[1];
+                int level = Integer.parseInt(parts[2]);
+                int strength = Integer.parseInt(parts[3]);
+                int health = Integer.parseInt(parts[4]);
+                int agility = Integer.parseInt(parts[5]);
+                String weapon = parts[6];
+                String skill = parts[7];
+
+                Character character = null;
+
+                switch (type) {
+                    case "Warrior":
+                        character = new Warrior(name, level, strength, health, agility, weapon, skill);
+                        break;
+                    case "Mage":
+                        character = new Mage(name, level, strength, health, agility, weapon, skill);
+                        break;
+                    case "Archer":
+                        character = new Archer(name, level, strength, health, agility, weapon, skill);
+                        break;
+                    default:
+                        System.out.println("Nieznany typ postaci: " + type);
+                        continue;
+                }
+
+                characters.add(character);
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return characters;
+    }
 
     public static void monsterAttack(Monster monster, Character character){
         int characterHealth = monster.attack(character.getHealth(), monster.getStrength());
@@ -39,6 +118,7 @@ public class Main {
         int whichMonster = 0;
         int monsterDead = 0;
         boolean bossStart = true;
+        System.out.println(GREEN + "First wave" + RESET);
         for(int i=0;i<Waves.waves.length;i++){
             for(int j=0;j<Waves.waves[i].length;j++){
                 if(Waves.waves[i][j] instanceof Zombie){
@@ -59,7 +139,6 @@ public class Main {
             Scanner scan = new Scanner(System.in);
             int monsterHealth;
             int characterHealth;
-            int characterDefaultHealth = character.getHealth();
     
             System.out.println("Your turn: ");
             System.out.println("1 - Attack");
@@ -237,10 +316,12 @@ public class Main {
                 }
 
                 if(monsterDead == currentWaveArray.length){
-                    character.setHealth(characterDefaultHealth);
+                    character.setHealth(character.getDefaultHealth());
                     character.addLevel();
-                    character.characterInfo();
-                    System.out.println(GREEN + "Wave " + currentWave + " Ends " + RESET);
+                    
+                    
+
+                    System.out.println(GREEN + "+1 level\n" + "Wave " + currentWave + " Ends " + RESET);
                     currentWave++;
                     monsterDead = 0;
                     System.out.println(GREEN + "Next wave " + currentWave + RESET);
@@ -412,7 +493,7 @@ public class Main {
     public static void main(String[] args)  throws InterruptedException {
         Scanner scan = new Scanner(System.in);
 
-//         List<Character> characters = new ArrayList<>();
+         List<Character> characters = loadCharacters();
          boolean running = true;
 
         Character testCharacter;
@@ -424,138 +505,143 @@ public class Main {
         testCharacter.characterInfo();
         System.out.println("-----------------------------");
 
-        while(running){
-            System.out.println("nigeggwfafs");
-            testCharacter.setHealth(100);
-            battle(testCharacter);
-        }
+        // while(running){
+        //     System.out.println("nigeggwfafs");
+        //     testCharacter.setHealth(testCharacter.getDefaultHealth());
+        //     battle(testCharacter);
+        // }
+
+        
         
     
-//         while (running) {
-//              System.out.println("Select option: ");
-//              System.out.println("-----------------------------");
-//              System.out.println("1 - Play");
-//              System.out.println("2 - Create character");
-//              System.out.println("3 - Show all characters");
-//              System.out.println("4 - End");
-//              System.out.println("-----------------------------");
-//              int chooseOption = scan.nextInt();
-//              System.out.println("");
-//              System.out.println("/////////////////////////////");
-//              System.out.println("");
-//
-//
-//              switch (chooseOption) {
-//                 case 1:
-//                     if (characters.isEmpty()) {
-//                         System.out.println("You don't have any characters");
-//                         System.out.println("");
-//                         System.out.println("/////////////////////////////");
-//                         System.out.println("");
-//                     } else {
-//                         System.out.println("Select character: ");
-//                         for (int i = 0; i < characters.size(); i++) {
-//                             System.out.println((i + 1) + " - " + characters.get(i).getName());
-//                         }
-//                         System.out.println("-----------------------------");
-//                         int pick = scan.nextInt();
-//
-//                         while(!(pick > 0 && pick <= characters.size())){
-//                             System.out.println("Wrong option!");
-//                             pick = scan.nextInt();
-//                         }
-//                             Character selected = characters.get(pick - 1);
-//                             System.out.println("-----------------------------");
-//                             System.out.println("You chosen: " + selected.getName());
-//                             selected.characterInfo();
-//                             System.out.println("");
-//                             System.out.println("/////////////////////////////");
-//                             System.out.println("");
-//                             running = false;
-//                     }
-//                     break;
-//                 case 2:
-//                     System.out.println("Select character: ");
-//                     System.out.println("-----------------------------");
-//                     System.out.println("1 - Warrior");
-//                     System.out.println("2 - Mage");
-//                     System.out.println("3 - Archer");
-//                     System.out.println("-----------------------------");
-//                     int selectCharacter = scan.nextInt();
-//
-//                     while(!(selectCharacter > 0 && selectCharacter < 4)){
-//                         System.out.println("Pick between 1 and 3.");
-//                         selectCharacter = scan.nextInt();
-//                     };
-//
-//                         System.out.println("-----------------------------");
-//                         System.out.print("Type character's name: ");
-//                         String name = scan.next();
-//
-//                         Character newCharacter = null;
-//                         switch (selectCharacter) {
-//                             case 1:
-//                                 newCharacter = new Warrior(name, 0, 10, 150, 20, "Sword", "Super Attack");
-//                                 break;
-//                              case 2:
-//                                 newCharacter = new Mage(name, 0, 20, 70, 30, "Magic Wand", "Heal");
-//                                 break;
-//                             case 3:
-//                                 newCharacter = new Archer(name, 0, 15, 100, 50, "Sword", "Dodge");
-//                                 break;
-//                             default:
-//                                 throw new IllegalArgumentException("Error");
-//                         }
-//
-//                         characters.add(newCharacter);
-//                         System.out.println("You created new character");
-//                         System.out.println("-----------------------------");
-//                         newCharacter.characterInfo();
-//                         System.out.println("");
-//                         System.out.println("/////////////////////////////");
-//                         System.out.println("");
-//
-//                     break;
-//                 case 3:
-//                     if (characters.isEmpty()) {
-//                         System.out.println("You don't have any characters");
-//                         System.out.println("");
-//                         System.out.println("/////////////////////////////");
-//                         System.out.println("");
-//                     } else {
-//                         System.out.println("Your characters:");
-//                         for (Character character : characters) {
-//                             System.out.println("-----------------------------");
-//                             character.characterInfo();
-//                         }
-//                         System.out.println("");
-//                         System.out.println("/////////////////////////////");
-//                         System.out.println("");
-//                     }
-//                     break;
-//                 case 4:
-//                     running = false;
-//                     System.out.println("Bye, Bye!");
-//                     break;
-//                     break;
-//                 case 22:
-//                      Display.kotDisplay();
-//                      break;
-//                 case 42069:
-//                     running = false;
-//                     System.out.println("Circular buffer");
-//                     break;
-//                 case 1908:
-//                     running = false;
-//                     System.out.println("Klubem Łodzi jest...");
-//                      Display.LKSDisplay();
-//                     break;
-//                 default:
-//                     System.out.println("Pick correct option");
-//                     System.out.println("-----------------------------");
-//                     break;
-//             }
-//         }
+        while (running) {
+             System.out.println("Select option: ");
+             System.out.println("-----------------------------");
+             System.out.println("1 - Play");
+             System.out.println("2 - Create character");
+             System.out.println("3 - Show all characters");
+             System.out.println("4 - End");
+             System.out.println("-----------------------------");
+             int chooseOption = scan.nextInt();
+             System.out.println("");
+             System.out.println("/////////////////////////////");
+             System.out.println("");
+
+
+             switch (chooseOption) {
+                case 1:
+                    if (characters.isEmpty()) {
+                        System.out.println("You don't have any characters");
+                        System.out.println("");
+                        System.out.println("/////////////////////////////");
+                        System.out.println("");
+                    } else {
+                        System.out.println("Select character: ");
+                        for (int i = 0; i < characters.size(); i++) {
+                            System.out.println((i + 1) + " - " + characters.get(i).getName());
+                        }
+                        System.out.println("-----------------------------");
+                        int pick = scan.nextInt();
+
+                        while(!(pick > 0 && pick <= characters.size())){
+                            System.out.println("Wrong option!");
+                            pick = scan.nextInt();
+                        }
+                            Character selected = characters.get(pick - 1);
+                            System.out.println("-----------------------------");
+                            System.out.println("You chosen: " + selected.getName());
+                            selected.characterInfo();
+                            System.out.println("");
+                            System.out.println("/////////////////////////////");
+                            System.out.println("");
+                            battle(selected);
+                            saveCharacters(characters);
+                    }
+                    break;
+                case 2:
+                    System.out.println("Select character: ");
+                    System.out.println("-----------------------------");
+                    System.out.println("1 - Warrior");
+                    System.out.println("2 - Mage");
+                    System.out.println("3 - Archer");
+                    System.out.println("-----------------------------");
+                    int selectCharacter = scan.nextInt();
+
+                    while(!(selectCharacter > 0 && selectCharacter < 4)){
+                        System.out.println("Pick between 1 and 3.");
+                        selectCharacter = scan.nextInt();
+                    };
+
+                        System.out.println("-----------------------------");
+                        System.out.print("Type character's name: ");
+                        String name = scan.next();
+
+                        Character newCharacter = null;
+                        switch (selectCharacter) {
+                            case 1:
+                                newCharacter = new Warrior(name, 0, 10, 150, 20, "Sword", "Super Attack");
+                                break;
+                             case 2:
+                                newCharacter = new Mage(name, 0, 20, 70, 30, "Magic Wand", "Heal");
+                                break;
+                            case 3:
+                                newCharacter = new Archer(name, 0, 15, 100, 50, "Sword", "Dodge");
+                                break;
+                            default:
+                                throw new IllegalArgumentException("Error");
+                        }
+
+                        characters.add(newCharacter);
+                        saveCharacters(characters);
+
+                        System.out.println("You created new character");
+                        System.out.println("-----------------------------");
+                        newCharacter.characterInfo();
+                        System.out.println("");
+                        System.out.println("/////////////////////////////");
+                        System.out.println("");
+
+                    break;
+                case 3:
+                    if (characters.isEmpty()) {
+                        System.out.println("You don't have any characters");
+                        System.out.println("");
+                        System.out.println("/////////////////////////////");
+                        System.out.println("");
+                    } else {
+                        System.out.println("Your characters:");
+                        for (Character character : characters) {
+                            System.out.println("-----------------------------");
+                            character.characterInfo();
+                        }
+                        System.out.println("");
+                        System.out.println("/////////////////////////////");
+                        System.out.println("");
+                    }
+                    break;
+                case 4:
+                    running = false;
+                    System.out.println("Bye, Bye!");
+                    System.exit(0);
+                    break;
+                case 22:
+                     Display.kotDisplay();
+                     break;
+                case 42069:
+                    running = false;
+                    System.out.println("Circular buffer");
+                    break;
+                case 1908:
+                    running = false;
+                    System.out.println("Klubem Łodzi jest...");
+                     Display.LKSDisplay();
+                    break;
+                default:
+                    System.out.println("Pick correct option");
+                    System.out.println("-----------------------------");
+                    break;
+            }
+        }
     }
 
 }

@@ -48,4 +48,13 @@ public class Mage extends Character{
         setSkillCooldown(true);
         return characterHealth;
     }
+
+    @Override
+    public int getDefaultHealth(){
+        int health = 70;
+        for(int i=0;i<getLevel();i++){
+            health *= 1.1;
+        }
+        return health;
+    }
 }
