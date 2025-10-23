@@ -6,11 +6,13 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Time;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class Main {
 
+    // DEKLARACJA KOLORÓW
     public static final String RESET = "\u001B[0m";
     public static final String RED = "\u001B[31m";
     public static final String GREEN = "\u001B[32m";
@@ -20,6 +22,8 @@ public class Main {
     public static final String TLO_CZERWONE = "\u001B[41m";
     public static final String CZARNY = "\u001B[90m";
 
+
+    // METODA ZAPISUJĄCA POSTACIE
     public static void saveCharacters(List<Character> characters) {
         Path path = Paths.get("saves.txt");
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(path.toFile()))) {
@@ -40,6 +44,8 @@ public class Main {
         }
     }
 
+
+    // METODA WCZYTUJĄCA POSTACIE
     public static List<Character> loadCharacters() {
         List<Character> characters = new ArrayList<>();
         Path path = Paths.get("saves.txt");
@@ -91,6 +97,8 @@ public class Main {
         return characters;
     }
 
+
+    // METODY ATAKU I OBRONY GRACZA I POTWORÓW {
     public static void monsterAttack(Monster monster, Character character){
         int characterHealth = monster.attack(character.getHealth(), monster.getStrength());
         character.setHealth(characterHealth);
@@ -105,20 +113,28 @@ public class Main {
         int characterHealth = character.defence(character.getHealth(), monster.getStrength());
         character.setHealth(characterHealth);
     }
+    //}
 
+    // PRYMITYWNE "CZYSZCZENIE" KONSOLI
     public static void clearConsole() {
         for (int i = 0; i < 50; i++) {
             System.out.println();
         }
     }
 
+
+    // METODA WALKI
     public static void battle(Character character) throws InterruptedException {
-        
+
+        // ZMIENNE UŻYWANE PÓŹNIEJ {
         int currentWave = 1;
         int whichMonster = 0;
         int monsterDead = 0;
         boolean bossStart = true;
+        //}
         System.out.println(GREEN + "First wave" + RESET);
+
+        // RESETOWANIE HP POTWORÓW PRZED FALĄ
         for(int i=0;i<Waves.waves.length;i++){
             for(int j=0;j<Waves.waves[i].length;j++){
                 if(Waves.waves[i][j] instanceof Zombie){
@@ -135,6 +151,8 @@ public class Main {
                 }
             }
         }
+
+        // PĘTLA GŁÓWNA
         while (character.getHealth() > 0 && Waves.waves[18][0].getHealth() > 0) {
             Scanner scan = new Scanner(System.in);
             int monsterHealth;
@@ -150,11 +168,13 @@ public class Main {
             int selectOption = scan.nextInt();
 
             System.out.println("-----------------------------");
+            System.out.println(" ");
 
             if(selectOption == 4 && character.isSkillCooldown()){
                 do{
                     System.out.println(RED + "You are too weak, to use your special abillity second time in a row." + RESET);
                     System.out.println("-----------------------------");
+                    System.out.println(" ");
 
                     System.out.println("Your turn: ");
                     System.out.println("1 - Attack");
@@ -166,38 +186,42 @@ public class Main {
                     selectOption = scan.nextInt();
 
                     System.out.println("-----------------------------");
+                    System.out.println(" ");
                 }while(selectOption == 4);
             }
             
             Monster[] currentWaveArray = Waves.waves[currentWave - 1];
 
+            // WYŚWIETLANIE HP GRACZA I POTWORÓW
             System.out.println("Your HP: " + character.getHealth());
             for(int i=0;i<currentWaveArray.length;i++){
-                System.out.println(i+1 + " - " + currentWaveArray[i].getName() + " [" + currentWaveArray[i].getHealth() + "]");
+                System.out.println(i+1 + " - " + currentWaveArray[i].getClass().getSimpleName() + " [" + currentWaveArray[i].getHealth() + "]");
             }
             System.out.println("-----------------------------");
+            System.out.println(" ");
 
             if ((selectOption > 0 && selectOption < 5)) {
                 
                 switch (selectOption) {
-                    case 1:
+                    case 1: // ATTACK
                     
-                        System.out.print("Choose monster to attack: ");
+                        System.out.print(BLUE + "Choose monster to attack: " + RESET);
                         selectOption = scan.nextInt();
                         System.out.println("-----------------------------");
+                        System.out.println(" ");
 
                         if(selectOption > 0 && selectOption <= currentWaveArray.length){
                             if(character.dodge(character.getAgility())){
                                 System.out.println(BLUE + "dodge" + RESET);
-                                if(currentWaveArray[whichMonster] instanceof Rogue) {
+                                if(currentWaveArray[whichMonster] instanceof Rogue) {// ROGUE DODGE
                                     currentWaveArray[whichMonster].setRogueDodge(true);
                                 }
                             }else{
                                 monsterAttack(currentWaveArray[whichMonster], character);
                             }
 
-                            if(currentWaveArray[selectOption - 1].getRogueDodge()){
-                                System.out.println(YELLOW + "Drapichrust dodged" + RESET);
+                            if(currentWaveArray[selectOption - 1].getRogueDodge()){// ROGUE DODGE
+                                System.out.println(YELLOW + "Rogue dodged" + RESET);
                                 currentWaveArray[selectOption - 1].setRogueDodge(false);
                             }else{
                                 playerAttack(currentWaveArray[selectOption - 1], character);
@@ -205,10 +229,11 @@ public class Main {
                         }else{
                             System.out.println(RED + "Pick correct option." + RESET);
                             System.out.println("-----------------------------");
+                            System.out.println(" ");
                         }
 
                         break;
-                    case 2:
+                    case 2: // DEFENCE
                         if(character.dodge(character.getAgility())){
                             System.out.println("You " + BLUE + "dodged" + RESET + ", so you " + YELLOW + "healed" + RESET);
                             character.setHealth(character.getHealth() + 3);
@@ -216,7 +241,7 @@ public class Main {
                             playerDefence(currentWaveArray[whichMonster], character);
                         }
                         break;
-                    case 3:
+                    case 3: // SAVE STRENGTH
                         character.saveStrength();
 
                         if(character.dodge(character.getAgility())){
@@ -226,20 +251,23 @@ public class Main {
                         }
 
                         break;
-                    case 4:
+                    case 4: // SPECIAL SKILL
                         if (!character.isSkillCooldown()) {
-                            if (character instanceof Warrior) {
+                            if (character instanceof Warrior) { // WARRIOR STRONGER ATTACK
                                 System.out.println(PURPLE + "You used strong attack skill" + RESET);
                                 System.out.print("Choose monster to attack: ");
                                 selectOption = scan.nextInt();
                                 System.out.println("-----------------------------");
+                                System.out.println(" ");
 
                                 if(selectOption > 0 && selectOption <= currentWaveArray.length){
                                     monsterHealth = character.skill(currentWaveArray[selectOption-1].getHealth(), character.getStrength());
                                     currentWaveArray[selectOption-1].setHealth(monsterHealth);
                                 }
-                            } else if (character instanceof Mage) {
+                            } else if (character instanceof Mage) { // MAGE HEAL
                                 System.out.println(PURPLE + "You used heal skill" + RESET);
+                                System.out.println("-----------------------------");
+                                System.out.println(" ");
                                 characterHealth = character.skill(character.getHealth(), character.getStrength());
                                 character.setHealth(characterHealth);
                             }
@@ -247,13 +275,15 @@ public class Main {
 
                         if(character.dodge(character.getAgility())){
                             System.out.println(BLUE + "dodge" + RESET);
-                            if(currentWaveArray[whichMonster] instanceof Rogue) {
+                            if(currentWaveArray[whichMonster] instanceof Rogue) { // ROGUE DODGE
                                 currentWaveArray[whichMonster].setRogueDodge(true);
                             }
-                        }else if(character instanceof Archer && selectOption == 4){
+                        }else if(character instanceof Archer && selectOption == 4){ // ARCHER 100% DODGE
                             System.out.println(PURPLE +"You used dodge skill" + RESET);
+                            System.out.println("-----------------------------");
+                            System.out.println(" ");
                             character.setSkillCooldown(true);
-                            if(currentWaveArray[whichMonster] instanceof Rogue) {
+                            if(currentWaveArray[whichMonster] instanceof Rogue) { // ROGUE DODGE
                                 currentWaveArray[whichMonster].setRogueDodge(true);
                             }
                         }else{
@@ -264,6 +294,7 @@ public class Main {
                     default:
                         throw new IllegalArgumentException("Error");
                 }
+                // KOLEJNY POTWÓR ATAKUJE {
                 if(whichMonster >= currentWaveArray.length-1){
                     whichMonster = 0;
                 }else{
@@ -276,11 +307,13 @@ public class Main {
                         }
                     }
                 }
-            } else {
+                // }
+            } else { // WALIDACJA
                 System.out.println(RED + "Pick correct option." + RESET);
                 System.out.println("-----------------------------");
+                System.out.println(" ");
             }
-            if(Waves.waves[18][0].getHealth() <= 0){
+            if(Waves.waves[18][0].getHealth() <= 0){ // INICJALIZACJA WALKI Z BOSSEM
                 System.out.println(GREEN + "Victory" + RESET);
                 TimeUnit.SECONDS.sleep(3);
                 System.out.println("You really thought you won...");
@@ -299,56 +332,75 @@ public class Main {
                 System.out.println(RED + "██████   ██████   ██████   ██████   █████  ███████ ██   ██ ██      ██ ██   ██  " + RESET);
                 bossStart = true;
                 break;
-            } else if (character.getHealth() <= 0) {
+            } else if (character.getHealth() <= 0) { // PORAŻKA
                 System.out.println(RED + "Defeat" + RESET);
                 bossStart = false;
                 break;
             } else {
-                TimeUnit.SECONDS.sleep(1);
+                TimeUnit.MILLISECONDS.sleep(500);
 
+                // WYŚWIETLANIE HP GRACZA I POTWORA
                 System.out.println("Your HP: " + character.getHealth());
                 for(int i=0;i<currentWaveArray.length;i++){
-                    System.out.println(i+1 + " - " + currentWaveArray[i].getName() + " [" + currentWaveArray[i].getHealth() + "]");
+                    System.out.println(i+1 + " - " + currentWaveArray[i].getClass().getSimpleName() + " [" + currentWaveArray[i].getHealth() + "]");
                 }
                 System.out.println("-----------------------------");
+                System.out.println(" ");
  
-
+                // SPRAWDZANIE ILE POTWORÓW ZABITYCH
                 for(int i=0;i<currentWaveArray.length;i++){
                     if(currentWaveArray[i].getHealth() <= 0){
                         monsterDead++;
                     }
                 }
 
+                // KOLEJNA FALA JEŚLI WSZYTSKIE ZGINĘŁY
                 if(monsterDead == currentWaveArray.length){
-                    character.setHealth(character.getDefaultHealth());
-                    character.addLevel();
-                    
-                    
+                    character.setHealth(character.getDefaultHealth()); // RESET HP GRACZA
+                    character.addLevel(); // DODAWANIE LEVELA PO KAŻDEJ FALI
 
                     System.out.println(GREEN + "+1 level\n" + "Wave " + currentWave + " Ends " + RESET);
                     currentWave++;
                     monsterDead = 0;
                     System.out.println(GREEN + "Next wave " + currentWave + RESET);
+                    currentWaveArray = Waves.waves[currentWave - 1];
+
+                    TimeUnit.MILLISECONDS.sleep(750);
+
+                    System.out.println("");
+                    // WYŚWIETLANIE HP POTWORÓW W NASTĘPNEJ FALI
+                    System.out.println("Monsters in next wave: ");
+                    for(int i=0;i<currentWaveArray.length;i++){
+                        System.out.println(i+1 + " - " + currentWaveArray[i].getClass().getSimpleName() + " [" + currentWaveArray[i].getHealth() + "]");
+                    }
+                    System.out.println("");
+
     
                 }else{
                     monsterDead = 0;
                 }
             }
         }
+        // WYWOŁANIE WALKI Z BOSSEM
         if(bossStart){
             bossBattle(character, Waves.waves[19][0]);
         }
     }
 
+    // METODA WALKI Z BOSSEM
     public static void bossBattle(Character character, Monster boguJerma) throws InterruptedException {
         TimeUnit.SECONDS.sleep(3);
         System.out.println();
         System.out.println(TLO_CZERWONE + CZARNY + "Dzisiaj napiszemy sobie metodę..." + RESET);
+
+        // ZMIENNE UŻYWANE PÓŹNIEJ {
         boolean debuffed = false;
         boolean saidLine = false;
+        // }
 
+        // GÓWNA PĘTLA
         while (character.getHealth() > 0 && boguJerma.getHealth() > 0) {
-        Scanner scan = new Scanner(System.in);
+            Scanner scan = new Scanner(System.in);
             int monsterHealth;
             int characterHealth;
     
@@ -362,11 +414,13 @@ public class Main {
             int selectOption = scan.nextInt();
 
             System.out.println("-----------------------------");
+            System.out.println(" ");
 
             if(selectOption == 4 && character.isSkillCooldown()){
                 do{
                     System.out.println(RED + "You are too weak, to use your special abillity second time in a row." + RESET);
                     System.out.println("-----------------------------");
+                    System.out.println(" ");
 
                     System.out.println("Your turn: ");
                     System.out.println("1 - Attack");
@@ -378,6 +432,7 @@ public class Main {
                     selectOption = scan.nextInt();
 
                     System.out.println("-----------------------------");
+                    System.out.println(" ");
                 }while(selectOption == 4);
             }
             
@@ -385,11 +440,12 @@ public class Main {
             System.out.println("Your HP: " + character.getHealth());
             System.out.println("BoguJerma HP: " + boguJerma.getHealth());
             System.out.println("-----------------------------");
+            System.out.println(" ");
 
             if ((selectOption > 0 && selectOption < 5)) {
                 
                 switch (selectOption) {
-                    case 1:
+                    case 1: // ATTACK
                         if(character.dodge(character.getAgility())){
                             System.out.println(BLUE + "dodge" + RESET);
                             System.out.println(TLO_CZERWONE + CZARNY + "Nienawidze tej Javy..." + RESET);
@@ -400,7 +456,7 @@ public class Main {
                         playerAttack(boguJerma, character);
                         
                         break;
-                    case 2:
+                    case 2: // DEFENCE
                         if(character.dodge(character.getAgility())){
                             System.out.println("You " + BLUE + "dodged" + RESET + ", so you " + YELLOW + "healed" + RESET);
                             System.out.println(TLO_CZERWONE + CZARNY + "Nienawidze tej Javy..." + RESET);
@@ -411,7 +467,7 @@ public class Main {
                             boguJerma.setHealth(boguJerma.passiveHealing(boguJerma.getHealth()));
                         }
                         break;
-                    case 3:
+                    case 3: // SAVE STRENGTH
                         character.saveStrength();
 
                         if(character.dodge(character.getAgility())){
@@ -422,13 +478,13 @@ public class Main {
                         }
                         boguJerma.setHealth(boguJerma.passiveHealing(boguJerma.getHealth()));
                         break;
-                    case 4:
+                    case 4: // SKILL
                         if (!character.isSkillCooldown()) {
-                            if (character instanceof Warrior) {
+                            if (character instanceof Warrior) { // // WARRIOR STRONGER ATTACK
                                 System.out.println(PURPLE + "You used strong attack skill" + RESET);
                                 monsterHealth = character.skill(boguJerma.getHealth(), character.getStrength());
                                 boguJerma.setHealth(monsterHealth);
-                            } else if (character instanceof Mage) {
+                            } else if (character instanceof Mage) { // MAGE HEAL
                                 System.out.println(PURPLE + "You used heal skill" + RESET);
                                 characterHealth = character.skill(character.getHealth(), character.getStrength());
                                 character.setHealth(characterHealth);
@@ -439,7 +495,7 @@ public class Main {
                         if(character.dodge(character.getAgility())){
                             System.out.println(BLUE + "dodge" + RESET);
                             System.out.println(TLO_CZERWONE + CZARNY + "Nienawidze tej Javy..." + RESET);
-                        }else if(character instanceof Archer && selectOption == 4){
+                        }else if(character instanceof Archer && selectOption == 4){ // ARCHER DODGE
                             System.out.println(PURPLE + "You used dodge skill" + RESET);
                             System.out.println(TLO_CZERWONE + CZARNY + "Nienawidze tej Javy..." + RESET);
                             character.setSkillCooldown(true);
@@ -452,32 +508,35 @@ public class Main {
                     default:
                         throw new IllegalArgumentException("Error");
                 }
-            } else {
+            } else { // WALIDACJA
                 System.out.println(RED + "Pick correct option." + RESET);
                 System.out.println("-----------------------------");
+                System.out.println(" ");
             }
-            if(boguJerma.getHealth() <= 0){
+            if(boguJerma.getHealth() <= 0){ // ZWYCIĘSTWO
                 System.out.println(GREEN + "Victory" + RESET);
                 System.out.println();
                 System.out.println(TLO_CZERWONE + CZARNY + "J4k to-oo? Przeci3ż C++ jest lep-$zy-y-y-y" + RESET);
                 break;
-            } else if (character.getHealth() <= 0) {
+            } else if (character.getHealth() <= 0) { // PORAŻKA
                 System.out.println(RED + "Defeat" + RESET);
                 System.out.println();
                 System.out.println(TLO_CZERWONE + CZARNY + "Kto nie ma brzucha, ten kiepsko r... pisze w C++" + RESET);
                 break;
             } else {
-                TimeUnit.SECONDS.sleep(1);
+                TimeUnit.MILLISECONDS.sleep(500);
 
                 System.out.println("Your HP: " + character.getHealth());
                 System.out.println("BoguJerma HP: " + boguJerma.getHealth());
                 System.out.println("-----------------------------");
+                System.out.println(" ");
 
                 if(!saidLine && (boguJerma.getHealth() < 500)){
                     System.out.println(TLO_CZERWONE + CZARNY + "TO JA PRACOWAŁEM W N@SA" + RESET);
                     saidLine = true;
                 }
 
+                // DEBUFFY JAK BOSS STRACI 3/4 HP
                 if(!debuffed && (boguJerma.getHealth() < 250)){
                     debuffed = true;
                     System.out.println(TLO_CZERWONE + CZARNY + "To dzisiaj napiszecie mi program - 'Reaktor jądrowy' w C++" + RESET);
@@ -493,31 +552,13 @@ public class Main {
         }
     }
 
-
+    // GŁÓWNA METODA MAIN
     public static void main(String[] args)  throws InterruptedException {
         Scanner scan = new Scanner(System.in);
 
          List<Character> characters = loadCharacters();
          boolean running = true;
 
-        Character testCharacter;
-        //testCharacter = new Warrior("Jeremi", 0, 10, 150, 20, "Sword", "Super Attack");
-        //testCharacter = new Mage("Jeremi", 0, 20, 70, 30, "Magic Wand", "Heal");
-        testCharacter = new Archer("Jeremi", 0, 150, 100, 70, "bow", "Dodge");
-
-        System.out.println("-----------------------------");
-        testCharacter.characterInfo();
-        System.out.println("-----------------------------");
-
-        // while(running){
-        //     System.out.println("nigeggwfafs");
-        //     testCharacter.setHealth(testCharacter.getDefaultHealth());
-        //     battle(testCharacter);
-        // }
-
-            
-        
-    
         while (running) {
              System.out.println("Select option: ");
              System.out.println("-----------------------------");
@@ -526,6 +567,7 @@ public class Main {
              System.out.println("3 - Show all characters");
              System.out.println("4 - End");
              System.out.println("-----------------------------");
+            System.out.println(" ");
              int chooseOption = scan.nextInt();
              System.out.println("");
              System.out.println("/////////////////////////////");
@@ -542,9 +584,10 @@ public class Main {
                     } else {
                         System.out.println("Select character: ");
                         for (int i = 0; i < characters.size(); i++) {
-                            System.out.println((i + 1) + " - " + characters.get(i).getName());
+                            System.out.println((i + 1) + " - " + characters.get(i).getName() + " (" + characters.get(i).getClass().getSimpleName() + ", "  +  characters.get(i).getLevel() + " lvl)");
                         }
                         System.out.println("-----------------------------");
+                        System.out.println(" ");
                         int pick = scan.nextInt();
 
                         while(!(pick > 0 && pick <= characters.size())){
@@ -553,7 +596,7 @@ public class Main {
                         }
                         Character selected = characters.get(pick - 1);
                         System.out.println("-----------------------------");
-                        System.out.println("You chosen: " + selected.getName());
+                        System.out.println("You chosen: ");
                         selected.characterInfo();
                         System.out.println("");
                         System.out.println("/////////////////////////////");
@@ -562,22 +605,23 @@ public class Main {
 
                         System.out.println("Select ur weapon: ");
                         System.out.println("-----------------------------");
+                        System.out.println(" ");
                     
                         if(selected instanceof Warrior){
                             System.out.println("1 - Sword (default)");
-                            System.out.println("2 - Axe");
-                            System.out.println("3 - Lance");
-                            System.out.println("4 - Pan");
+                            System.out.println("2 - Axe (10 lvl)");
+                            System.out.println("3 - Lance (20 lvl)");
+                            System.out.println("4 - Pan (30 lvl)");
                         }else if(selected instanceof Mage){
                             System.out.println("1 - Wand (default)");
-                            System.out.println("2 - Staff");
-                            System.out.println("3 - Spell book");
-                            System.out.println("4 - Super duper spell book");
+                            System.out.println("2 - Staff (10 lvl)");
+                            System.out.println("3 - Spell book (20 lvl)");
+                            System.out.println("4 - Super duper spell book (30 lvl)");
                         }else if(selected instanceof Archer){
                             System.out.println("1 - Bow (default)");
-                            System.out.println("2 - Better bow, lmao");
-                            System.out.println("3 - Rock (throwable btw)");
-                            System.out.println("4 - Unusual looking stick (kinda sexy)");
+                            System.out.println("2 - Better bow, lmao (10 lvl)");
+                            System.out.println("3 - Rock (throwable btw) (20 lvl)");
+                            System.out.println("4 - Unusual looking stick (kinda sexy) (30 lvl)");
                         }
 
                         System.out.println("-----------------------------");
@@ -632,10 +676,9 @@ public class Main {
                                 selected.firstWeapon();
                         }
                     }
-
+                        selected.setHealth(selected.getDefaultHealth());
                         selected.characterInfo();
                         
-
                         battle(selected);
 
                         characters.set(pick-1, selected);
@@ -651,6 +694,7 @@ public class Main {
                     System.out.println("2 - Mage");
                     System.out.println("3 - Archer");
                     System.out.println("-----------------------------");
+                    System.out.println(" ");
                     int selectCharacter = scan.nextInt();
 
                     while(!(selectCharacter > 0 && selectCharacter < 4)){
@@ -659,6 +703,7 @@ public class Main {
                     };
 
                         System.out.println("-----------------------------");
+                        System.out.println(" ");
                         System.out.print("Type character's name: ");
                         String name = scan.next();
 
@@ -668,10 +713,10 @@ public class Main {
                                 newCharacter = new Warrior(name, 0, 10, 150, 20, "Sword", "Super Attack");
                                 break;
                              case 2:
-                                newCharacter = new Mage(name, 0, 20, 70, 30, "Magic Wand", "Heal");
+                                newCharacter = new Mage(name, 0, 20, 70, 30, "Wand", "Heal");
                                 break;
                             case 3:
-                                newCharacter = new Archer(name, 0, 15, 100, 50, "Sword", "Dodge");
+                                newCharacter = new Archer(name, 0, 15, 100, 50, "Bow", "Dodge");
                                 break;
                             default:
                                 throw new IllegalArgumentException("Error");
@@ -698,6 +743,7 @@ public class Main {
                         System.out.println("Your characters:");
                         for (Character character : characters) {
                             System.out.println("-----------------------------");
+                            System.out.println(" ");
                             character.characterInfo();
                         }
                         System.out.println("");
@@ -725,6 +771,7 @@ public class Main {
                 default:
                     System.out.println("Pick correct option");
                     System.out.println("-----------------------------");
+                    System.out.println(" ");
                     break;
             }
         }
